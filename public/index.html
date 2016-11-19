@@ -2,13 +2,13 @@
 <!doctype html>
 
 <!-- ASSIGN OUR ANGULAR MODULE -->
-<html ng-app="GestionUsuarios">
+<html ng-app="OnlineMusicLibrary">
 <head>
     <!-- META -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
 
-    <title>Playlists</title>
+    <title>Online Music Library</title>
 
     <!-- SCROLLS -->
     <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -25,14 +25,16 @@
     <script src="core.js"></script>
 
 </head>
+
 <!-- SET THE CONTROLLER AND GET ALL TODOS -->
 <body ng-controller="mainController">
 <div class="container">
-    <h2>Create a Playlist</h2>
+    <h1>Welcome to Online Music Library</h1>
+    <h2>Your Playlist</h2>
     <table class="table"><thead>
     <tr>
+        <th></th>
         <th>Artist</th>
-        <th>Date Added</th>
         <th>Title</th>
         <th>File</th>
         <th>Remove</th>
@@ -41,31 +43,31 @@
         <tbody ng-repeat="n in notes">
         <tr>
             <td><a href="" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-tag"></span></a></td>
-            <td>{{n.date}}</td>
-            <td>{{n.text}}</td>
-            <td ng-click="getFile(n)"><a href="{{n.fichero}}">{{n.fichero}}</a></td>
+            <td>{{n.artist}}</td>
+            <td>{{n.title}}</td>
+            <td ng-click="getFile(n)"><a href="{{n.file}}">{{n.file}}</a></td>
             <td ng-click="removeNote(n)"><a class = "btn btn-danger btn-xs" href="/"><span class="glyphicon glyphicon-trash"></span></a></td>
         </tr>
         </tbody>
     </table>
     </br></br>
-    <h4>Add a song</h4>'
+    <h4>Add a song</h4>
     <form class="form-horizontal" role="form" enctype="multipart/form-data" action="/notes" method="post">
         <div class="form-group">
             <label class="control-label col-sm-1" >Artist:</label>
             <div class="col-sm-5">
-                <input type="text" class="form-control" name="date" required>
+                <input type="text" class="form-control" name="artist" required>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-1">Title:</label>
             <div class="col-sm-5">
-                <input type="text" class="form-control" name="text" required></input>
+                <input type="text" class="form-control" name="title" required>
             </div>
         </div>
         <div class="form-group">
             <div class="col-sm-offset-1 col-sm-10">
-                <input type="file" class="form-control-life" name="fichero">
+                <input type="file" class="form-control-life" name="file">
             </div>
         </div>
         <div class="form-group">

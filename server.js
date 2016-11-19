@@ -157,16 +157,16 @@ app.post("/notes",function(req,res){
     var parse = new formidable.IncomingForm();
     parse.parse(req, function(err,fields,files){
         var db = new mongoNote();
-        db.date = fields.date;
-        db.text = fields.text;
-        db.fichero = files.fichero.name;
-        if(files.fichero.name != ''){
-            var nombre = files.fichero.name.replace(/ /g,"_");
-            fs.rename(files.fichero.path,"ficheros/"+nombre, function(err){
+        db.artist = fields.artist;
+        db.title = fields.title;
+        db.file = files.file.name;
+        if(files.file.name != ''){
+            var nombre = files.file.name.replace(/ /g,"_");
+            fs.rename(files.file.path,"ficheros/"+nombre, function(err){
                 if(err){
                     console.log("Error");
                 }else{
-                    db.fichero = nombre;
+                    db.file = nombre;
                     db.save(function (err) {
                         if (err) console.log("Error");
                     });
@@ -191,10 +191,10 @@ app.delete("/notes/:id",function(req,res){
                 res.writeHead(500, {'Location': '/error'});
                 res.end();
             }else{
-                if(data.fichero != ""){
-                    mongoNote.find({"fichero":data.fichero},function (err,data2) {
+                if(data.file != ""){
+                    mongoNote.find({"fichero":data.file},function (err,data2) {
                         if (data2.length == 0){
-                            fs.unlink("ficheros/"+ data.fichero, function (err) {
+                            fs.unlink("ficheros/"+ data.file, function (err) {
                                 if (err) console.log("Error al eliminar fichero");
                             });
                         }
@@ -230,5 +230,3 @@ app.get('*', function(req,res){
 
 app.listen(3000);
 console.log("Listening to PORT 3000");
-
-

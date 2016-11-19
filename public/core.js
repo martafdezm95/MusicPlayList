@@ -1,5 +1,5 @@
 
-var GestionUsuarios = angular.module('GestionUsuarios', []);
+var OnlineMusicLibrary = angular.module('OnlineMusicLibrary', []);
 
 function mainController($scope, $http) {
     $scope.formData = {};

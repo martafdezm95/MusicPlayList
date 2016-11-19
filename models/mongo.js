@@ -11,13 +11,18 @@ var userSchema  = {
 };
 
 var noteSchema = {
-    "date" : String,
-    "text" : String,
-    "fichero": String
+    "artist" : String,
+    "title" : String,
+    "file": String
+};
+
+var playlistSchema = {
+    noteSquema : {}
 };
 
 // create model if not exists.
 module.exports.User = mongoose.model('userLogin',userSchema);
+module.exports.Playlist = mongoose.model('playlist',playlistSchema);
 module.exports.Notes = mongoose.model('notes',noteSchema)
 
 
