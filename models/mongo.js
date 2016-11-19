@@ -1,6 +1,7 @@
 
 var mongoose    =   require("mongoose");
 mongoose.connect('mongodb://localhost:27017/stw6');
+
 // create instance of Schema
 var mongoSchema =   mongoose.Schema;
 // create schema
@@ -10,8 +11,8 @@ var userSchema  = {
 };
 
 var noteSchema = {
-    "fecha" : String,
-    "texto" : String,
+    "date" : String,
+    "text" : String,
     "fichero": String
 };
 

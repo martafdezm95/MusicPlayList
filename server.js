@@ -157,8 +157,8 @@ app.post("/notes",function(req,res){
     var parse = new formidable.IncomingForm();
     parse.parse(req, function(err,fields,files){
         var db = new mongoNote();
-        db.fecha = fields.fecha;
-        db.texto = fields.texto;
+        db.date = fields.date;
+        db.text = fields.text;
         db.fichero = files.fichero.name;
         if(files.fichero.name != ''){
             var nombre = files.fichero.name.replace(/ /g,"_");

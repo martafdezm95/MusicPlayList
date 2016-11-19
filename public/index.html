@@ -41,8 +41,8 @@
         <tbody ng-repeat="n in notes">
         <tr>
             <td><a href="" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-tag"></span></a></td>
-            <td>{{n.fecha}}</td>
-            <td>{{n.texto}}</td>
+            <td>{{n.date}}</td>
+            <td>{{n.text}}</td>
             <td ng-click="getFile(n)"><a href="{{n.fichero}}">{{n.fichero}}</a></td>
             <td ng-click="removeNote(n)"><a class = "btn btn-danger btn-xs" href="/"><span class="glyphicon glyphicon-trash"></span></a></td>
         </tr>
@@ -54,13 +54,13 @@
         <div class="form-group">
             <label class="control-label col-sm-1" >Artist:</label>
             <div class="col-sm-5">
-                <input type="text" class="form-control" name="fecha" required>
+                <input type="text" class="form-control" name="date" required>
             </div>
         </div>
         <div class="form-group">
             <label class="control-label col-sm-1">Title:</label>
             <div class="col-sm-5">
-                <input type="text" class="form-control" name="texto" required></input>
+                <input type="text" class="form-control" name="text" required></input>
             </div>
         </div>
         <div class="form-group">

@@ -53,13 +53,3 @@ function mainController($scope, $http) {
     }
 
 }
-
-
-
-
-
-
-
-
-
-
