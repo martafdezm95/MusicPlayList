@@ -28,37 +28,37 @@
 <!-- SET THE CONTROLLER AND GET ALL TODOS -->
 <body ng-controller="mainController">
 <div class="container">
-    <h2>Gestor Tareas</h2>
+    <h2>Create your playlist</h2>
     <table class="table"><thead>
     <tr>
-        <th>Tarea</th>
-        <th>Fecha Limite</th>
-        <th>Comentarios</th>
-        <th>Fichero</th>
-        <th>Eliminar</th>
+        <th>Name</th>
+        <th>Date</th>
+        <th>Coment</th>
+        <th>File</th>
+        <th>Remove</th>
     </tr>
     </thead>
         <tbody ng-repeat="n in notes">
         <tr>
             <td><a href="" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-tag"></span></a></td>
-            <td>{{n.fecha}}</td>
-            <td>{{n.texto}}</td>
-            <td ng-click="getFile(n)"><a href="{{n.fichero}}">{{n.fichero}}</a></td>
+            <td>{{n.date}}</td>
+            <td>{{n.text}}</td>
+            <td ng-click="getFile(n)"><a href="{{n.fichero}}">{{n.file}}</a></td>
             <td ng-click="removeNote(n)"><a class = "btn btn-danger btn-xs" href="/"><span class="glyphicon glyphicon-trash"></span></a></td>
         </tr>
         </tbody>
     </table>
     </br></br>
-    <h4>Añade una tarea</h4>'
+    <h4>Add a song</h4>
     <form class="form-horizontal" role="form" enctype="multipart/form-data" action="/notes" method="post">
         <div class="form-group">
-            <label class="control-label col-sm-1" >Fecha:</label>
+            <label class="control-label col-sm-1" >Date:</label>
             <div class="col-sm-5">
                 <input type="date" class="form-control" name="fecha" placeholder="DD/MM/YYYY" required>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-1">Texto:</label>
+            <label class="control-label col-sm-1">Text:</label>
             <div class="col-sm-10">
                 <textarea type="text" class="form-control" rows="3" name="texto" placeholder="Info" required></textarea>
             </div>

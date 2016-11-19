@@ -8,14 +8,14 @@ var userSchema  = {
     "pass" : String
 };
 
-var noteSchema = {
-    "fecha" : String,
-    "texto" : String,
-    "fichero": String
+var songSchema = {
+    "date" : String,
+    "text" : String,
+    "file": String
 };
 
 // create model if not exists.
 module.exports.User = mongoose.model('userLogin',userSchema);
-module.exports.Notes = mongoose.model('notes',noteSchema)
+module.exports.Song = mongoose.model('song',songSchema)
 
 
