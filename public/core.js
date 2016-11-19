@@ -1,10 +1,3 @@
-/**
- * Autor: Alejandro Solanas Bonilla
- * NIA: 647647
- * Fichero: core.js
- * Fecha: 29/5/2016
- * Funcion: Modulo y controlador principal de angular
- */
 
 var GestionUsuarios = angular.module('GestionUsuarios', []);
 

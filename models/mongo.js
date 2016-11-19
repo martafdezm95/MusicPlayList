@@ -1,10 +1,3 @@
-/**
- * Autor: Alejandro Solanas Bonilla
- * NIA: 647647
- * Fichero: mongo.js
- * Fecha: 29/5/2016
- * Funcion: Modelo de usuarios y notas de mongodb y conector de mongoose
- */
 
 var mongoose    =   require("mongoose");
 mongoose.connect('mongodb://localhost:27017/stw6');

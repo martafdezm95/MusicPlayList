@@ -1,11 +1,3 @@
-/**
- * Autor: Alejandro Solanas Bonilla
- * NIA: 647647
- * Fichero: server.js
- * Fecha: 29/5/2016
- * Funcion: API REST Nodejs y Express, que permite la gestion de usuarios y notas. Servidor en el puerto 3000
- */
-
 
 //Requires
 var express     =   require("express");
