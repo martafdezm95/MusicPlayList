@@ -8,7 +8,7 @@ var userSchema  = {
     "pass" : String
 };
 
-var songSchema = {
+var noteSchema = {
     "date" : String,
     "text" : String,
     "file": String
@@ -16,6 +16,6 @@ var songSchema = {
 
 // create model if not exists.
 module.exports.User = mongoose.model('userLogin',userSchema);
-module.exports.Song = mongoose.model('song',songSchema)
+module.exports.Notes = mongoose.model('notes',noteSchema)
 
 

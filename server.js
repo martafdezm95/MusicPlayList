@@ -1,9 +1,10 @@
+
 //Requires
 var express     =   require("express");
 var app         =   express();
 var bodyParser  =   require("body-parser");
 var mongoUser   =   require("./models/mongo").User;
-var mongoNote   =   require("./models/mongo").Song;
+var mongoNote   =   require("./models/mongo").Notes;
 var path        =   require("path");
 var router      =   express.Router();
 var fs          =   require("fs");
@@ -156,16 +157,16 @@ app.post("/notes",function(req,res){
     var parse = new formidable.IncomingForm();
     parse.parse(req, function(err,fields,files){
         var db = new mongoNote();
-        db.fecha = fields.fecha;
-        db.texto = fields.texto;
-        db.fichero = files.fichero.name;
-        if(files.fichero.name != ''){
-            var nombre = files.fichero.name.replace(/ /g,"_");
-            fs.rename(files.fichero.path,"ficheros/"+nombre, function(err){
+        db.date = fields.date;
+        db.text = fields.text;
+        db.file = files.file.name;
+        if(files.file.name != ''){
+            var nombre = files.file.name.replace(/ /g,"_");
+            fs.rename(files.file.path,"ficheros/"+nombre, function(err){
                 if(err){
                     console.log("Error");
                 }else{
-                    db.fichero = nombre;
+                    db.file = nombre;
                     db.save(function (err) {
                         if (err) console.log("Error");
                     });
@@ -190,10 +191,10 @@ app.delete("/notes/:id",function(req,res){
                 res.writeHead(500, {'Location': '/error'});
                 res.end();
             }else{
-                if(data.fichero != ""){
-                    mongoNote.find({"fichero":data.fichero},function (err,data2) {
+                if(data.file != ""){
+                    mongoNote.find({"fichero":data.file},function (err,data2) {
                         if (data2.length == 0){
-                            fs.unlink("ficheros/"+ data.fichero, function (err) {
+                            fs.unlink("ficheros/"+ data.file, function (err) {
                                 if (err) console.log("Error al eliminar fichero");
                             });
                         }
