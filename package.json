@@ -1,7 +1,7 @@
 {
-  "name": "Practica 6",
+  "name": "Online Music Library",
   "version": "1.0.0",
-  "description": "Aplicación de gestión de usuarios",
+  "description": "Website for M7011E course at LTU",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
