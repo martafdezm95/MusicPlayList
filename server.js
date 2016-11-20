@@ -161,12 +161,12 @@ app.post("/notes",function(req,res){
         db.title = fields.title;
         db.file = files.file.name;
         if(files.file.name != ''){
-            var nombre = files.file.name.replace(/ /g,"_");
-            fs.rename(files.file.path,"ficheros/"+nombre, function(err){
+            var name = files.file.name.replace(/ /g,"_");
+            fs.rename(files.file.path,"ficheros/"+name, function(err){
                 if(err){
                     console.log("Error");
                 }else{
-                    db.file = nombre;
+                    db.file = name;
                     db.save(function (err) {
                         if (err) console.log("Error");
                     });

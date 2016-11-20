@@ -33,7 +33,7 @@
     <h2>Your Playlist</h2>
     <table class="table"><thead>
     <tr>
-        <th></th>
+        <th>Play</th>
         <th>Artist</th>
         <th>Title</th>
         <th>File</th>
@@ -42,7 +42,12 @@
     </thead>
         <tbody ng-repeat="n in notes">
         <tr>
-            <td><a href="" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-tag"></span></a></td>
+            <!--<td><a href="" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-tag"></span></a></td>-->
+            <td>
+                <audio id="player" src="{{n.file}}" type="audio/mpeg">Your browser does not support the audio formats</audio>
+                <button onclick="document.getElementById('player').play()">Play</button>
+                <button onclick="document.getElementById('player').pause()">Pause</button>
+            </td>
             <td>{{n.artist}}</td>
             <td>{{n.title}}</td>
             <td ng-click="getFile(n)"><a href="{{n.file}}">{{n.file}}</a></td>
@@ -76,7 +81,6 @@
             </div>
         </div>
     </form>
-
 </div>
 
 </body>
