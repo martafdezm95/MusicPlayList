@@ -53,3 +53,21 @@ function mainController($scope, $http) {
     }
 
 }
+function playPause()
+{
+    var playPause = document.getElementById("playPause");
+    var player = document.getElementById("player");
+    if(player.paused || player.ended)
+    {
+        player.play();
+        playPause.title = "Pause";
+        playPause.innerHTML = "Pause";
+    }
+    else
+    {
+        player.pause();
+        playPause.title = "Play";
+        playPause.innerHTML = "Play";
+    }
+
+}
