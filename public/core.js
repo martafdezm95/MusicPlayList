@@ -5,7 +5,7 @@ function mainController($scope, $http) {
     $scope.formData = {};
     $scope.notes = {};
 
-    // when landing on the page, get all notes
+    //when landing on the page, get all notes
     $http.get('/notes')
         .success(function(data) {
             $scope.notes = data.message;
@@ -15,7 +15,7 @@ function mainController($scope, $http) {
             console.log('Error: ' + data);
         });
 
-    // when submitting the add form, send the text to the node API
+    //when submitting the add form, send the text to the node API
     $scope.createUser = function() {
         $http.post('/users', $scope.formData)
             .success(function(data) {

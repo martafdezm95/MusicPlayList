@@ -1,6 +1,9 @@
 
 var mongoose    =   require("mongoose");
-mongoose.connect('mongodb://localhost:27017/stw6');
+//mongoose.connect('mongodb://localhost:27017/stw6');
+mongoose.connect('mongodb://root:root@ds159527.mlab.com:59527/onlinemusiclibrary');
+
+
 
 // create instance of Schema
 var mongoSchema =   mongoose.Schema;
