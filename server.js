@@ -13,6 +13,7 @@ var formidable = require("formidable");
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : false}));
 app.use(express.static(path.join(__dirname ,'ficheros')));
+app.use(express.static(path.join(__dirname ,'public')));
 
 //Resource users
 router.route("/users")
@@ -207,9 +208,15 @@ app.delete("/notes/:id",function(req,res){
     });
 });
 
+app.get("/login",function(req,res){
+    res.sendfile('./public/login.html');
+});
+app.get("/register",function(req,res){
+    res.sendfile('./public/register.html');
+});
 //Main page
 app.get('/', function(req, res) {
-    res.sendfile('./public/index.html');
+    res.sendfile('./public/generic.html');
 });
 
 //Fichero angular

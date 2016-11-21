@@ -1,0 +1,175 @@
+<!-- index.html -->
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="OnlineMusicLibrary">
+<head>
+	<!-- META -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+	<title>Online Music Library</title>
+
+	<!-- SCROLLS -->
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<style>
+		html                    { overflow-y:scroll; }
+		body                    { padding-top:50px; }
+		#todo-list              { margin-bottom:30px; }
+		/* The Modal (background) */
+		.modal {
+			display: none; /* Hidden by default */
+			position: fixed; /* Stay in place */
+			z-index: 1; /* Sit on top */
+			left: 0;
+			top: 0;
+			width: 100%; /* Full width */
+			height: 100%; /* Full height */
+			overflow: auto; /* Enable scroll if needed */
+			background-color: rgb(0,0,0); /* Fallback color */
+			background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+		}
+
+		/* Modal Content/Box */
+		.modal-content {
+			background-color: #fefefe;
+			margin: 15% auto; /* 15% from the top and centered */
+			padding: 20px;
+			border: 1px solid #888;
+			height: 25%;
+			width: 25%; /* Could be more or less, depending on screen size */
+		}
+
+		/* The Close Button */
+		.close {
+			color: #aaa;
+			float: right;
+			font-size: 28px;
+			font-weight: bold;
+		}
+
+		.close:hover,
+		.close:focus {
+			color: black;
+			text-decoration: none;
+			cursor: pointer;
+		}
+		.myBtnLogin {
+			float: right;
+		}
+		.login {
+			margin: auto;
+			display: block;
+		}
+	</style>
+
+	<!-- SPELLS -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="core.js"></script>
+</head>
+
+<!-- SET THE CONTROLLER AND GET ALL TODOS -->
+<body ng-controller="mainController">
+<!--HERE WAS THE LOGIN BUTTON-->
+<!-- Header -->
+<header id="header">
+	<h1><a href="#">OnlineMusicLibrary<span>M7011E project</span></a></h1>
+	<a href="#menu">Menu</a>
+</header>
+
+<!-- Nav -->
+<nav id="menu">
+	<ul class="links">
+		<li><a href="generic.html">Home</a></li>
+		<li><a href="views/template.html">Playlist</a></li>
+		<li><a href="views/elements.html">Elements</a></li>
+	</ul>
+</nav>
+<section class="wrapper style1">
+	<div class="inner">
+		<header class="align-center">
+			<h2>Your playlist</h2>
+			<p>Here you'll be able to add and remove songs from your playlist</p>
+		</header>
+	</div>
+</section>
+<div id="main">
+	<!-- Three -->
+	<section class="wrapper ">
+		<div class="inner">
+			<table class="table"><thead>
+			<tr>
+				<th>Play</th>
+				<th>Artist</th>
+				<th>Title</th>
+				<th>File</th>
+				<th>Remove</th>
+			</tr>
+			</thead>
+				<tbody ng-repeat="n in notes">
+				<tr>
+					<!--<td><a href="" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-tag"></span></a></td>-->
+					<td>
+						<audio id="player" src="{{n.file}}" type="audio/mpeg">Your browser does not support the audio formats</audio>
+						<button id="playPause" onclick="playPause()">Play</button>
+					</td>
+					<td>{{n.artist}}</td>
+					<td>{{n.title}}</td>
+					<td ng-click="getFile(n)"><a href="{{n.file}}">{{n.file}}</a></td>
+					<td ng-click="removeNote(n)"><a class = "btn btn-danger btn-xs" href="/"><span class="glyphicon glyphicon-trash"></span></a></td>
+				</tr>
+				</tbody>
+			</table>
+			</br></br>
+			<h4>Add a song</h4>
+			<form class="form-horizontal" role="form" enctype="multipart/form-data" action="/notes" method="post">
+				<div class="form-group">
+					<label class="control-label col-sm-1" >Artist:</label>
+					<div class="col-sm-5">
+						<input type="text" class="form-control" name="artist" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">Title:</label>
+					<div class="col-sm-5">
+						<input type="text" class="form-control" name="title" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-1 col-sm-10">
+						<input type="file" class="form-control-life" name="file">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-1 col-sm-10">
+						<button type="submit" value="Upload file" class="btn btn-default">Submit</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</section>
+</div>
+
+<!-- Footer -->
+<footer id="footer">
+	<div class="copyright">
+		<ul class="icons">
+			<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+			<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+			<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+			<li><a href="#" class="icon fa-snapchat"><span class="label">Snapchat</span></a></li>
+		</ul>
+		&copy; Untitled. Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com">Coverr</a>. Video: <a href="https://coverr.co">Coverr</a>.
+	</div>
+</footer>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/skel.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>
