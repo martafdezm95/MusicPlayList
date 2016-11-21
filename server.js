@@ -15,8 +15,6 @@ app.use(bodyParser.urlencoded({"extended" : false}));
 app.use(express.static(path.join(__dirname ,'ficheros')));
 app.use(express.static(path.join(__dirname ,'public')));
 
-app.set('view engine', 'ejs');
-
 //Resource users
 router.route("/users")
     .get(function(req,res){
@@ -180,7 +178,7 @@ app.post("/notes",function(req,res){
                 if (err) console.log("Error");
             });
         }
-        res.writeHead(302, {'Location': 'template.ejs'});
+        res.writeHead(302, {'Location': 'template.html'});
         res.end();
     });
 
@@ -211,14 +209,14 @@ app.delete("/notes/:id",function(req,res){
 });
 
 app.get("/login",function(req,res){
-    res.sendfile('./public/login.ejs');
+    res.sendfile('./public/login.html');
 });
 app.get("/register",function(req,res){
-    res.sendfile('./public/register.ejs');
+    res.sendfile('./public/register.html');
 });
 //Main page
 app.get('/', function(req, res) {
-    res.sendfile('./public/generic.ejs');
+    res.sendfile('./public/generic.html');
 });
 
 //Fichero angular
