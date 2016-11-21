@@ -1,0 +1,125 @@
+<!-- index.html -->
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="OnlineMusicLibrary">
+<head>
+	<!-- META -->
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+	<title>Online Music Library</title>
+
+	<!-- SCROLLS -->
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<!-- SPELLS -->
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+	<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="core.js"></script>
+</head>
+
+<!-- SET THE CONTROLLER AND GET ALL TODOS -->
+<body ng-controller="mainController">
+<!-- Header -->
+<header id="header">
+	<h1><a href="#">OnlineMusicLibrary<span>M7011E project</span></a></h1>
+	<a href="#menu">Menu</a>
+</header>
+
+<!-- Nav -->
+<nav id="menu">
+	<ul class="links">
+		<li><a href="generic.ejs">Home</a></li>
+		<li><a href="views/template.html">Playlist</a></li>
+		<li><a href="views/elements.html">Elements</a></li>
+	</ul>
+</nav>
+<section class="wrapper style1">
+	<div class="inner">
+		<header class="align-center">
+			<h2>Your playlist</h2>
+			<p>Here you'll be able to add and remove songs from your playlist</p>
+		</header>
+	</div>
+</section>
+<div id="main">
+	<!-- Three -->
+	<section class="wrapper ">
+		<div class="inner">
+			<table class="table"><thead>
+			<tr>
+				<th>Play</th>
+				<th>Artist</th>
+				<th>Title</th>
+				<th>File</th>
+				<th>Remove</th>
+			</tr>
+			</thead>
+				<tbody ng-repeat="n in notes">
+				<tr>
+					<!--<td><a href="" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-tag"></span></a></td>-->
+					<td>
+						<audio id="player" src="{{n.file}}" type="audio/mpeg">Your browser does not support the audio formats</audio>
+						<button id="playPause" onclick="playPause()">Play</button>
+					</td>
+					<td>{{n.artist}}</td>
+					<td>{{n.title}}</td>
+					<td ng-click="getFile(n)"><a href="{{n.file}}">{{n.file}}</a></td>
+					<td>
+						<a ng-click="removeNote(n)" href="template.html" class="btn btn-default">Remove</a>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+			</br></br>
+			<h4>Add a song</h4>
+			<form class="form-horizontal" role="form" enctype="multipart/form-data" action="/notes" method="post">
+				<div class="form-group">
+					<label class="control-label col-sm-1" >Artist:</label>
+					<div class="col-sm-5">
+						<input type="text" class="form-control" name="artist" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<label class="control-label col-sm-1">Title:</label>
+					<div class="col-sm-5">
+						<input type="text" class="form-control" name="title" required>
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-1 col-sm-10">
+						<input type="file" class="form-control-life" name="file">
+					</div>
+				</div>
+				<div class="form-group">
+					<div class="col-sm-offset-1 col-sm-10">
+						<button type="submit" value="Upload file" class="btn btn-default">Submit</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	</section>
+</div>
+
+<!-- Footer -->
+<footer id="footer">
+	<div class="copyright">
+		<ul class="icons">
+			<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+			<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+			<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+			<li><a href="#" class="icon fa-snapchat"><span class="label">Snapchat</span></a></li>
+		</ul>
+		&copy; Untitled. Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com">Coverr</a>. Video: <a href="https://coverr.co">Coverr</a>.
+	</div>
+</footer>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/skel.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+
+</body>
+</html>
