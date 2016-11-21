@@ -117,7 +117,9 @@
 					<td>{{n.artist}}</td>
 					<td>{{n.title}}</td>
 					<td ng-click="getFile(n)"><a href="{{n.file}}">{{n.file}}</a></td>
-					<td ng-click="removeNote(n)"><a class = "btn btn-danger btn-xs" href="/"><span class="glyphicon glyphicon-trash"></span></a></td>
+					<td>
+						<a  ng-click="removeNote(n)" class="btn btn-default" href="template.html">Remove</a>
+					</td>
 				</tr>
 				</tbody>
 			</table>
