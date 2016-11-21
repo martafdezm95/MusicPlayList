@@ -1,5 +1,5 @@
 {
-  "name": "Online Music Library",
+  "name": "onlinemusiclibrary",
   "version": "1.0.0",
   "description": "Website for M7011E course at LTU",
   "main": "server.js",
