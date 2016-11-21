@@ -6,14 +6,14 @@ function mainController($scope, $http) {
     $scope.notes = {};
 
     // when landing on the page, get all notes
-    $http.get('/notes')
-        .success(function(data) {
-            $scope.notes = data.message;
-            console.log(data);
-        })
-        .error(function(data) {
-            console.log('Error: ' + data);
-        });
+    // $http.get('/notes')
+    //     .success(function(data) {
+    //         $scope.notes = data.message;
+    //         console.log(data);
+    //     })
+    //     .error(function(data) {
+    //         console.log('Error: ' + data);
+    //     });
 
     // when submitting the add form, send the text to the node API
     $scope.createUser = function() {
