@@ -178,7 +178,7 @@ app.post("/notes",function(req,res){
                 if (err) console.log("Error");
             });
         }
-        res.writeHead(302, {'Location': 'template.html'});
+        res.writeHead(302, {'Location': '/'});
         res.end();
     });
 
