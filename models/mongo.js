@@ -1,6 +1,6 @@
 
 var mongoose    =   require("mongoose");
-mongoose.connect('mongodb://localhost:27017/stw6');
+//mongoose.connect('mongodb://localhost:27017/stw6');
 
 // create instance of Schema
 var mongoSchema =   mongoose.Schema;
