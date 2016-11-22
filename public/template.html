@@ -56,7 +56,7 @@
 				<th>Remove</th>
 			</tr>
 			</thead>
-				<tbody ng-repeat="n in notes">
+				<tbody ng-repeat="n in songs">
 				<tr>
 					<!--<td><a href="" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-tag"></span></a></td>-->
 					<td>
@@ -71,14 +71,14 @@
 					<td>{{n.title}}</td>
 					<td ng-click="getFile(n)"><a href="{{n.file}}">{{n.file}}</a></td>
 					<td>
-						<a  ng-click="removeNote(n)" class="btn btn-default" href="template.html">Remove</a>
+						<a  ng-click="removeSong(n)" class="btn btn-default" href="template.html">Remove</a>
 					</td>
 				</tr>
 				</tbody>
 			</table>
 			</br></br>
 			<h4>Add a song</h4>
-			<form class="form-horizontal" role="form" enctype="multipart/form-data" action="/notes" method="post">
+			<form class="form-horizontal" role="form" enctype="multipart/form-data" action="/songs" method="post">
 				<div class="form-group">
 					<label class="control-label col-sm-1" >Artist:</label>
 					<div class="col-sm-5">

@@ -4,7 +4,7 @@ var express     =   require("express");
 var app         =   express();
 var bodyParser  =   require("body-parser");
 var mongoUser   =   require("./models/mongo").User;
-var mongoNote   =   require("./models/mongo").Notes;
+var mongoSong   =   require("./models/mongo").Songs;
 var path        =   require("path");
 var router      =   express.Router();
 var fs          =   require("fs");
@@ -16,8 +16,8 @@ app.use(express.static(path.join(__dirname ,'ficheros')));
 app.use(express.static(path.join(__dirname ,'public')));
 
 // Devuelve un Json con todas las notas en la bbdd
-app.get("/notes",function(req,res){
-    mongoNote.find({},function(err,data){
+app.get("/songs",function(req,res){
+    mongoSong.find({},function(err, data){
         // Mongo command to fetch all data from collection.
         if(err) {
             response = {"error" : true,"message" : "Error fetching data"};
@@ -29,11 +29,11 @@ app.get("/notes",function(req,res){
 });
 
 // Añade una nueva nota a la bbdd y almancena el fichero si es necesario
-app.post("/notes",function(req,res){
+app.post("/songs",function(req,res){
     console.log("Post note");
     var parse = new formidable.IncomingForm();
     parse.parse(req, function(err,fields,files){
-        var db = new mongoNote();
+        var db = new mongoSong();
         db.artist = fields.artist;
         db.title = fields.title;
         db.file = files.file.name;
@@ -61,15 +61,15 @@ app.post("/notes",function(req,res){
 });
 
 //Borra una nota de la bbdd eliminando el fichero si necesario
-app.delete("/notes/:id",function(req,res){
-    mongoNote.findById(req.params.id,function(err,data){
-        mongoNote.remove({"_id":req.params.id},function(err){
+app.delete("/songs/:id",function(req,res){
+    mongoSong.findById(req.params.id,function(err, data){
+        mongoSong.remove({"_id":req.params.id},function(err){
             if(err){
                 res.writeHead(500, {'Location': '/error'});
                 res.end();
             }else{
                 if(data.file != ""){
-                    mongoNote.find({"fichero":data.file},function (err,data2) {
+                    mongoSong.find({"fichero":data.file},function (err, data2) {
                         if (data2.length == 0){
                             fs.unlink("ficheros/"+ data.file, function (err) {
                                 if (err) console.log("Error deleting the file");

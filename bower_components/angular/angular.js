@@ -18867,7 +18867,7 @@ function $SceProvider() {
   };
 
 
-  /* Design notes on the default implementation for SCE.
+  /* Design songs on the default implementation for SCE.
    *
    * The API contract for the SCE delegate
    * -------------------------------------

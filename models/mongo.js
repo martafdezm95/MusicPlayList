@@ -13,7 +13,6 @@ mongoose.connect(uristring, function (err, res) {
     }
 });
 
-
 // create instance of Schema
 var mongoSchema =   mongoose.Schema;
 // create schema
@@ -22,7 +21,7 @@ var userSchema  = {
     "pass" : String
 };
 
-var noteSchema = {
+var songSchema = {
     "artist" : String,
     "title" : String,
     "file": String
@@ -30,6 +29,6 @@ var noteSchema = {
 
 // create model if not exists.
 module.exports.User = mongoose.model('userLogin',userSchema);
-module.exports.Notes = mongoose.model('notes',noteSchema)
+module.exports.Songs = mongoose.model('songs',songSchema)
 
 

@@ -3,12 +3,12 @@ var OnlineMusicLibrary = angular.module('OnlineMusicLibrary', []);
 
 function mainController($scope, $http) {
     $scope.formData = {};
-    $scope.notes = {};
+    $scope.songs = {};
 
-    //when landing on the page, get all notes
-    $http.get('/notes')
+    //when landing on the page, get all songs
+    $http.get('/songs')
         .success(function(data) {
-            $scope.notes = data.message;
+            $scope.songs = data.message;
             console.log(data);
         })
         .error(function(data) {
@@ -41,10 +41,10 @@ function mainController($scope, $http) {
     };
 
     //delete a note
-    $scope.removeNote = function(n) {
-        $http.delete('/notes/'+n._id)
+    $scope.removeSong = function(n) {
+        $http.delete('/songs/'+n._id)
             .success(function(data) {
-                $scope.notas = data.notas;
+                $scope.songs = data.songsy;
                 console.log(data);
             })
             .error(function(data) {
@@ -73,8 +73,8 @@ OnlineMusicLibrary.directive('myAudio', function() {
                     playBtnId.innerHTML='Play';
                 }
             });
-
-
         }
     };
 });
+$("#somediv").load('login.html').dialog({modal:true});
+
