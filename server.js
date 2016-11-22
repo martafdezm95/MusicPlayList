@@ -72,7 +72,7 @@ app.delete("/notes/:id",function(req,res){
                     mongoNote.find({"fichero":data.file},function (err,data2) {
                         if (data2.length == 0){
                             fs.unlink("ficheros/"+ data.file, function (err) {
-                                if (err) console.log("Error al eliminar fichero");
+                                if (err) console.log("Error deleting the file");
                             });
                         }
                     });
