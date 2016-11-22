@@ -1,8 +1,17 @@
 
+var http = require('http');
 var mongoose    =   require("mongoose");
 //mongoose.connect('mongodb://localhost:27017/stw6');
-mongoose.connect('mongodb://root:root@ds159527.mlab.com:59527/onlinemusiclibrary');
 
+var uristring = process.env.MONGOLAB_URI || 'mongodb://localhost/8080';
+
+mongoose.connect(uristring, function (err, res) {
+    if (err) {
+        console.log ('ERROR connecting to: ' + uristring + '. ' + err);
+    } else {
+        console.log ('Succeeded connecting to: ' + uristring);
+    }
+});
 
 
 // create instance of Schema

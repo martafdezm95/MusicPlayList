@@ -235,5 +235,5 @@ app.get('*', function(req,res){
    res.status(404).send('<h1>404 This is not the Webpage you are looking for</h1>')
 });
 
-app.listen(8080);
+app.listen(process.env.PORT || 8080);
 console.log("Listening to PORT 8080");

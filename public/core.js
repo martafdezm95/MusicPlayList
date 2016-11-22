@@ -51,7 +51,51 @@ function mainController($scope, $http) {
                 console.log('Error: ' + data);
             });
     }
+}
 
+OnlineMusicLibrary.directive('myAudio', function() {
+    return {
+        restrict: 'E',
+        link: function(scope, element, attr) {
+            var player = element.children('.player')[0];
+            var playBtn= document.getElementsByClassName('.play');
+            var playBtnId= document.getElementById('play');
+            element.children('.play').on('click', function() {
+                if(player.paused || player.ended){
+                    player.play();
+                    playBtnId.title='Pause';
+                    playBtnId.innerHTML='Pause';
+                }
+                else{
+
+                    player.pause();
+                    playBtnId.title='Play';
+                    playBtnId.innerHTML='Play';
+                }
+            });
+
+
+        }
+    };
+});
+$scope.playSong = function(n) {
+    var song = new Audio(n.file);
+    var playPause = document.getElementById("playPause");
+    var player = document.getElementById("player");
+    song.play();
+    console.log("Playing song");
+    if(player.paused || player.ended)
+    {
+        song.play();
+        playPause.title = "Pause";
+        playPause.innerHTML = "Pause";
+    }
+    else
+    {
+        song.pause();
+        playPause.title = "Play";
+        playPause.innerHTML = "Play";
+    }
 }
 function playPause()
 {
