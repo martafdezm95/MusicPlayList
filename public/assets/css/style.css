@@ -3,11 +3,11 @@
 }
 
 html {
+
     overflow-y: scroll;
 }
 
 body {
-    background: #c1bdba;
     font-family: 'Titillium Web', sans-serif;
 }
 
@@ -22,12 +22,15 @@ a:hover {
 }
 
 .form {
-    background: rgba(19, 35, 47, 0.9);
+
+    background: rgba(19, 35, 47, 1);
     padding: 40px;
     max-width: 600px;
+    width: 600px;
     margin: 40px auto;
     border-radius: 4px;
     box-shadow: 0 4px 10px 4px rgba(19, 35, 47, 0.3);
+    z-index: 1;
 }
 
 .tab-group {

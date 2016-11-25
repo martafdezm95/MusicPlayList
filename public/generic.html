@@ -11,6 +11,7 @@
 
 	<!-- SCROLLS -->
 	<link rel="stylesheet" href="assets/css/main.css" />
+	<link rel="stylesheet" href="assets/css/custom.css"/>
 
 	<!-- SPELLS -->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
@@ -21,6 +22,7 @@
 
 <!-- SET THE CONTROLLER AND GET ALL TODOS -->
 <body ng-controller="mainController">
+
 <!-- Header -->
 <header id="header">
 	<h1><a href="#">OnlineMusicLibrary<span>M7011E project</span></a></h1>
@@ -42,11 +44,8 @@
 			<h1>Welcome to the Online Music Library</h1>
 			<p>Here you'll be able to store, sort and play all your music into playlists.</p>
 		</header>
-		<a id="myBtnLogin" href="login.html" class="button big alt scrolly" >Login</a>
+		<a onclick="openLoginModal()" id="myBtnLogin" href="#loginModal" data-rel="popup" data-position-to="window" class="button big alt scrolly" >Login</a>
 		<a id="myBtnRegister" href="register.html" class="button big alt scrolly">Register</a>
-		<div id="dialog">
-			<p>Pop up window text</p>
-		</div>
 	</div>
 </section>
 
@@ -70,5 +69,9 @@
 <script src="assets/js/util.js"></script>
 <script src="assets/js/main.js"></script>
 
+<div data-role="popup" id="loginModal" class="loginModal">
+	<span onclick="document.getElementById('loginModal').style.display='none'" style="float:right">Close</span>
+	<iframe class="loginModalContainer" id="loginModalContainer" src="login.html" width="600px" height="600px"></iframe>
+</div>
 </body>
 </html>
