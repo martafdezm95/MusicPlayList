@@ -85,14 +85,14 @@ app.delete("/songs/:id",function(req,res){
 });
 
 app.get("/login",function(req,res){
-    res.sendfile('./public/login.html');
+    res.sendfile('./public/loginRegister.html');
 });
 app.get("/register",function(req,res){
     res.sendfile('./public/register.html');
 });
 //Main page
 app.get('/', function(req, res) {
-    res.sendfile('./public/generic.html');
+    res.sendfile('./public/frontPage.html');
 });
 
 //Fichero angular
