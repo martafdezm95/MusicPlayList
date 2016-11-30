@@ -17,7 +17,7 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	<script src="core.js"></script>
+	<script src="js/core.js"></script>
 </head>
 
 <!-- SET THE CONTROLLER AND GET ALL TODOS -->
@@ -32,9 +32,9 @@
 <!-- Nav -->
 <nav id="menu">
 	<ul class="links">
-		<li><a href="frontPage.html">Home</a></li>
-		<li><a href="playLists.html">Playlists</a></li>
-		<li><a href="elements.html">Elements</a></li>
+		<li><a href="index.html">Home</a></li>
+		<li><a href="#/playlists">Playlists</a></li>
+		<li><a href="views/elements.html">Elements</a></li>
 	</ul>
 </nav>
 <!-- Main -->
@@ -69,7 +69,7 @@
 <script src="assets/js/main.js"></script>
 
 <div data-role="popup" id="loginModal" class="loginModal">
-	<iframe class="loginModalContainer" id="loginModalContainer" src="loginRegister.html" width="600px" height="600px"></iframe>
+	<iframe class="loginModalContainer" id="loginModalContainer" src="views/loginRegister.html" width="600px" height="600px"></iframe>
 	<div style="text-align: center;">
 		<span onclick="document.getElementById('loginModal').style.display='none'" class="button big alt scrolly">Close</span>
 	</div>

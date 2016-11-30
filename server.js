@@ -1,4 +1,3 @@
-
 //Requires
 var express     =   require("express");
 var app         =   express();
@@ -25,7 +24,7 @@ app.get("/songs",function(req,res){
             response = {"error" : false,"message" : data};
         }
         res.json(response);
-    });   
+    });
 });
 
 // Añade una nueva nota a la bbdd y almancena el fichero si es necesario
@@ -84,22 +83,6 @@ app.delete("/songs/:id",function(req,res){
     });
 });
 
-app.get("/login",function(req,res){
-    res.sendfile('./public/loginRegister.html');
-});
-app.get("/register",function(req,res){
-    res.sendfile('./public/register.html');
-});
-//Main page
-app.get('/', function(req, res) {
-    res.sendfile('./public/frontPage.html');
-});
-
-//Fichero angular
-app.get('/core.js', function(req, res) {
-    res.sendfile('./public/core.js');
-});
-
 //Server error
 app.get('/error', function(req,res){
     res.status(404).send('<h1>500 SERVER ERROR</h1>')
@@ -108,7 +91,7 @@ app.get('/error', function(req,res){
 //Not Found
 app.get('*', function(req,res){
     console.log(req.path);
-   res.status(404).send('<h1>404 This is not the Webpage you are looking for</h1>')
+    res.status(404).send('<h1>404 This is not the Webpage you are looking for</h1>')
 });
 
 app.listen(process.env.PORT || 8080);

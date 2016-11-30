@@ -17,8 +17,11 @@ mongoose.connect(uristring, function (err, res) {
 var mongoSchema =   mongoose.Schema;
 // create schema
 var userSchema  = {
-    "user" : String,
-    "pass" : String
+    email: {type: String, require: true, unique: true},
+    password: {type: String, require: true},
+    name: {type: String, require: true},
+    surname: {type: String, require: true},
+    b_deleted: {type: Boolean, default: false},
 };
 
 var songSchema = {
