@@ -2,27 +2,27 @@
 <!doctype html>
 
 <!-- ASSIGN OUR ANGULAR MODULE -->
-<html>
+<html ng-app="OnlineMusicLibrary">
 <head>
 	<!-- META -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
-
-	<title>LogIn</title>
+	<title>Online Music Library</title>
 
 	<!-- SCROLLS -->
-	<link rel="stylesheet" href="../assets/css/main.css"/>
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<link rel="stylesheet" href="assets/css/custom.css"/>
 
 	<!-- SPELLS -->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	<script src="../core.js"></script>
-
+	<script src="core.js"></script>
 </head>
 
 <!-- SET THE CONTROLLER AND GET ALL TODOS -->
 <body ng-controller="mainController">
+
 <!-- Header -->
 <header id="header">
 	<h1><a href="#">OnlineMusicLibrary<span>M7011E project</span></a></h1>
@@ -32,23 +32,21 @@
 <!-- Nav -->
 <nav id="menu">
 	<ul class="links">
-		<li><a href="../generic.html">Home</a></li>
-		<li><a href="template.html">Playlist</a></li>
+		<li><a href="frontPage.html">Home</a></li>
+		<li><a href="playLists.html">Playlists</a></li>
 		<li><a href="elements.html">Elements</a></li>
 	</ul>
 </nav>
-<div class="container">
-	<div class="modal-content">
-    		<h2 style="text-align: center">Login</h2>
-    		<input class="login" type="text" placeholder="Username" name="username">
-    		<input class="login" type="password" placeholder="Password" name="password">
-            <br><br>
-            <div style="text-align: center">
-                <a id="myBtnLogin" href="template.html" class="button big alt scrolly">Login</a>
-                <a id="myBtnCancelLogin" href="generic.html" class="button big alt scrolly">Cancel</a>
-            </div>
-    </div>
-</div>
+<!-- Main -->
+<section id="banner">
+	<div class="inner">
+		<header>
+			<h1>Welcome to the Online Music Library</h1>
+			<p>Here you'll be able to store, sort and play all your music into playlists.</p>
+		</header>
+		<a onclick="openLoginModal()" id="myBtnLogin" href="#loginModal" data-rel="popup" data-position-to="window" class="button big alt scrolly" >Enter</a>
+	</div>
+</section>
 
 <!-- Footer -->
 <footer id="footer">
@@ -64,13 +62,17 @@
 </footer>
 
 <!-- Scripts -->
-<script src="../assets/js/jquery.min.js"></script>
-<script src="../assets/js/jquery.scrolly.min.js"></script>
-<script src="../assets/js/skel.min.js"></script>
-<script src="../assets/js/util.js"></script>
-<script src="../assets/js/main.js"></script>
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/skel.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
 
-</body>
-</html>
+<div data-role="popup" id="loginModal" class="loginModal">
+	<iframe class="loginModalContainer" id="loginModalContainer" src="loginRegister.html" width="600px" height="600px"></iframe>
+	<div style="text-align: center;">
+		<span onclick="document.getElementById('loginModal').style.display='none'" class="button big alt scrolly">Close</span>
+	</div>
+</div>
 </body>
 </html>
