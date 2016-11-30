@@ -15,16 +15,19 @@
 	<link rel="stylesheet" href="assets/css/custom.css"/>
 
 	<!-- SPELLS -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script><!-- load jquery -->
+	<script src="../bower_components/angular/angular.min.js"></script><!-- load angular -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	<script src="js/core.js"></script>
+	<script src="../bower_components/angular-route/angular-route.min.js"></script>
+
+	<script src="js/core.js" type="text/javascript"></script>
 
 </head>
 
 <!-- SET THE CONTROLLER AND GET ALL TODOS -->
-<body ng-controller="mainController">
-
+<!--<body ng-controller="mainController">-->
+<body >
+<!-- Header -->
 <div id="header">
 	<h1><a href="#">OnlineMusicLibrary<span>M7011E project</span></a></h1>
 	<a href="#menu">Menu</a>
@@ -33,9 +36,9 @@
 <!-- Nav -->
 <nav id="menu">
 	<ul class="links">
-		<li><a href="index.html">Home</a></li>
+		<li><a href="#/home">Home</a></li>
 		<li><a href="#/playlists">Playlists</a></li>
-		<li><a href="views/elements.html">Elements</a></li>
+		<li><a href="#/elements">Elements</a></li>
 	</ul>
 </nav>
 <div class="container-fluid">
@@ -64,12 +67,5 @@
 <script src="assets/js/skel.min.js"></script>
 <script src="assets/js/util.js"></script>
 <script src="assets/js/main.js"></script>
-
-<div data-role="popup" id="loginModal" class="loginModal">
-	<iframe class="loginModalContainer" id="loginModalContainer" src="views/loginRegister.html" width="600px" height="600px"></iframe>
-	<div style="text-align: center;">
-		<span onclick="document.getElementById('loginModal').style.display='none'" class="button big alt scrolly">Close</span>
-	</div>
-</div>
 </body>
 </html>

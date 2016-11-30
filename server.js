@@ -13,6 +13,8 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : false}));
 app.use(express.static(path.join(__dirname ,'ficheros')));
 app.use(express.static(path.join(__dirname ,'public')));
+app.use(express.static(path.join(__dirname ,'/')));
+
 
 // Devuelve un Json con todas las notas en la bbdd
 app.get("/songs",function(req,res){

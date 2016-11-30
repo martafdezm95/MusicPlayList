@@ -9,4 +9,10 @@
 			<a onclick="openLoginModal()" id="myBtnLogin" href="#loginModal" data-rel="popup" data-position-to="window" class="button big alt scrolly" >Enter</a>
 		</div>
 	</section>
+	<div data-role="popup" id="loginModal" class="loginModal">
+		<iframe class="loginModalContainer" id="loginModalContainer" src="views/loginRegister.html" width="600px" height="600px"></iframe>
+		<div style="text-align: center;">
+			<span onclick="document.getElementById('loginModal').style.display='none'" class="button big alt scrolly">Close</span>
+		</div>
+	</div>
 </div>
