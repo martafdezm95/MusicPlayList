@@ -2,10 +2,11 @@
 <!doctype html>
 
 <!-- ASSIGN OUR ANGULAR MODULE -->
-<html ng-app="OnlineMusicLibrary">
+<html ng-app="OnlineMusicLibrary" lang="en">
 <head>
 	<!-- META -->
 	<meta charset="utf-8">
+	<base href="/">
 	<meta name="viewport" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
 	<title>Online Music Library</title>
 
@@ -18,16 +19,16 @@
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.0.8/angular.min.js"></script><!-- load angular -->
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script src="js/core.js"></script>
+
 </head>
 
 <!-- SET THE CONTROLLER AND GET ALL TODOS -->
 <body ng-controller="mainController">
 
-<!-- Header -->
-<header id="header">
+<div id="header">
 	<h1><a href="#">OnlineMusicLibrary<span>M7011E project</span></a></h1>
 	<a href="#menu">Menu</a>
-</header>
+</div>
 
 <!-- Nav -->
 <nav id="menu">
@@ -37,16 +38,12 @@
 		<li><a href="views/elements.html">Elements</a></li>
 	</ul>
 </nav>
-<!-- Main -->
-<section id="banner">
-	<div class="inner">
-		<header>
-			<h1>Welcome to the Online Music Library</h1>
-			<p>Here you'll be able to store, sort and play all your music into playlists.</p>
-		</header>
-		<a onclick="openLoginModal()" id="myBtnLogin" href="#loginModal" data-rel="popup" data-position-to="window" class="button big alt scrolly" >Enter</a>
-	</div>
-</section>
+<div class="container-fluid">
+
+	<!-- ANGULAR DYNAMIC CONTENT -->
+	<div ng-view></div>
+
+</div>
 
 <!-- Footer -->
 <footer id="footer">

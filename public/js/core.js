@@ -3,7 +3,7 @@ var app = angular.module('OnlineMusicLibrary' ["ngRoute"])
 app.config(function($routeProvider) {
     $routeProvider
         .when("/", {
-            templateUrl: "index.html"
+            templateUrl: "frontPage.html"
         })
         .when("/playlists", {
             controller: "mainCtrl",
