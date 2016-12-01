@@ -55,7 +55,6 @@ app.post("/songs",function(req,res){
                 if (err) console.log("Error");
             });
         }
-        res.writeHead(302, {'Location': 'template.html'});
         res.end();
     });
 
@@ -78,7 +77,6 @@ app.delete("/songs/:id",function(req,res){
                         }
                     });
                 }
-                res.writeHead(302, {'Location': '/'});
                 res.end();
             }
         });

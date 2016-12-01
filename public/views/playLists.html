@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" >
 	<section class="wrapper style1">
 		<div class="inner">
 			<h1 class="align-center">
@@ -26,7 +26,7 @@
 						<td>
 							<my-audio>
 								<audio class="player">
-									<source src="{{n.file}}" />
+									<source ng-src="{{n.file}}" />
 								</audio>
 								<button id="play" class="play">Play</button>
 							</my-audio>
@@ -35,7 +35,7 @@
 						<td>{{n.title}}</td>
 						<td ng-click="getFile(n)"><a href="{{n.file}}">{{n.file}}</a></td>
 						<td>
-							<a  ng-click="removeSong(n)" class="btn btn-default" href="playLists.html">Remove</a>
+							<a  ng-click="removeSong(n)" class="btn btn-default" href="#/playlists">Remove</a>
 						</td>
 					</tr>
 					</tbody>
