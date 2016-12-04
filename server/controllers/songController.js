@@ -25,6 +25,7 @@ module.exports = {
              tried to rename to an already existing file */
             if (fields.title != null && fields.artist != null) {
                 if (files.upload != '' && files.upload != null) {
+                    console.log(files);
                     //var buffer = new Buffer(getFilesizeInBytes(files));
 
                     //guarda en el path único el archivo, en un sistema de ficheros
@@ -39,9 +40,10 @@ module.exports = {
 
                         } else {
                             var song = {};
+                            console.log(path);
                             song.artist = fields.artist;
                             song.title = fields.title;
-                            song.path = path.file.name;
+                            song.path = path;
                             // inserción en la BBDD con ruta del archivo en la BBDD
                             songs.insertMemo(song, function (err, document) {
                                 if (err) {

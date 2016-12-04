@@ -1,4 +1,4 @@
-var app = angular.module('OnlineMusicLibrary', ["ngRoute", "ngFileUpload"]);
+var app = angular.module('OnlineMusicLibrary', ["ngRoute"]);
 
 app.config(function($routeProvider) {
     $routeProvider
@@ -26,7 +26,7 @@ app.config(function($routeProvider) {
 app.controller('EmptyCtrl', function($scope,$http,$location){
     $location.path("/home")
 })
-app.controller('mainCtrl',['$scope', 'Upload', '$timeout', function($scope, $http, formDataObject, $location, Upload, $timeout) {
+app.controller('mainCtrl',['$scope', '$http', 'formDataObject', '$location', '$timeout', function($scope, $http, formDataObject, $location, $timeout) {
     $scope.formData = new FormData();
     $scope.error = {};
     $scope.files = {};
@@ -49,79 +49,48 @@ app.controller('mainCtrl',['$scope', 'Upload', '$timeout', function($scope, $htt
         .error(function(data) {
             console.log('Error: ' + data);
         });
-    $scope.uploadFiles = function(file, errFiles) {
-        $scope.f = file;
-        $scope.errFile = errFiles && errFiles[0];
-        if (file) {
-            file.upload = Upload.upload({
-                url: 'https://angular-file-upload-cors-srv.appspot.com/upload',
-                data: {file: file}
-            });
 
-            file.upload.then(function (response) {
-                $timeout(function () {
-                    file.result = response.data;
-                });
-            }, function (response) {
-                if (response.status > 0)
-                    $scope.errorMsg = response.status + ': ' + response.data;
-            }, function (evt) {
-                file.progress = Math.min(100, parseInt(100.0 *
-                    evt.loaded / evt.total));
-            });
-        }
-    }
+
     // when submitting the add form, send the text to the node API
-    // $scope.submitSong = function() {
-    //     $scope.fileToUpload = {}
-    //     console.log($scope.fileToUpload)
-    //     if ($scope.formData.title != null && $scope.formData.artist != null) {
-    //         $http({
-    //             method:"post",
-    //             url: '/songs',
-    //             headers: { 'Content-Type': undefined },
-    //             transformRequest: formDataObject,
-    //             data: { model: $scope.formData, files: $scope.files }})
-    //             .success(function (data) {
-    //                 $scope.formData = {}; // clear the form so our user is ready to enter another
-    //                 angular.element("input[type='file']").val(null);
-    //                 $scope.songs = data.songs;
-    //                 console.log(data);
-    //
-    //             })
-    //             .error(function (data) {
-    //                 $scope.formData = {}; // clear the form so our user is ready to enter another
-    //                 console.log('Error: ' + data);
-    //                 angular.element("input[type='file']").val(null);
-    //             });
-    //     } else {
-    //         $scope.error.artist = true;
-    //     }
-    // };
+    $scope.submitSong = function() {
+        $scope.fileToUpload = {}
+        console.log($scope.fileToUpload)
+        if ($scope.formData.title != null && $scope.formData.artist != null) {
+            $http({
+                method:"post",
+                url: '/songs',
+                headers: { 'Content-Type': undefined },
+                transformRequest: formDataObject,
+                data: { model: $scope.formData, files: $scope.files }})
+                .success(function (data) {
+                    $scope.formData = {}; // clear the form so our user is ready to enter another
+                    angular.element("input[type='file']").val(null);
+                    $scope.songs = data.songs;
+                    console.log(data);
+
+                })
+                .error(function (data) {
+                    $scope.formData = {}; // clear the form so our user is ready to enter another
+                    console.log('Error: ' + data);
+                    angular.element("input[type='file']").val(null);
+                });
+        } else {
+            $scope.error.artist = true;
+        }
+    };
     //
     // // delete a todo after checking it
-    // $scope.removeSong = function(id) {
-    //     $http.delete('/songs/' + id)
-    //         .success(function(data) {
-    //             $scope.songs = data.songs;
-    //             console.log(data);
-    //         })
-    //         .error(function(data) {
-    //             console.log('Error: ' + data);
-    //         });
-    // };
+    $scope.removeSong = function(id) {
+        $http.delete('/songs/' + id)
+            .success(function(data) {
+                $scope.songs = data.songs;
+                console.log(data);
+            })
+            .error(function(data) {
+                console.log('Error: ' + data);
+            });
+    };
 
-    // $scope.removeSong = function(n) {
-    //     $http.delete('/songs/'+n._id)
-    //         .success(function(data) {
-    //             $scope.songs = data.songs;
-    //             //location.reload();
-    //             console.log(data);
-    //         })
-    //         .error(function(data) {
-    //             console.log('Error: ' + data);
-    //         });
-    // }
 }])
 
 app.factory('formDataObject', function() {
