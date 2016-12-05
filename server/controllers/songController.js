@@ -2,6 +2,8 @@ var fs = require("fs"),
     formidable = require("formidable");
 var songs = require("../models/songs")
 var crypto = require('crypto');
+var S3FS = require('s3fs');
+
 
 module.exports = {
     showAllMemo: function(req, res, next) {
@@ -26,11 +28,29 @@ module.exports = {
             if (fields.title != null && fields.artist != null) {
                 if (files.upload != '' && files.upload != null) {
                     console.log(files);
-                    //var buffer = new Buffer(getFilesizeInBytes(files));
+
+                    s3fsImpl = new S3FS('omlsongs', {
+                        accessKeyId: "AKIAI5L7WWVFEHHOP7CQ",
+                        secretAccessKey: "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",
+                    });
+                    s3fsImpl.create();
+
 
                     //guarda en el path único el archivo, en un sistema de ficheros
                     // y esta ruta la guardamos en la BBDD
-                    var path = "/files/" + crypto.createHash('md5').update("" + new Date().getTime()).digest("hex") + files.upload.name;
+                    var path = "/files/" + files.upload.name;
+
+                    var file = files.upload;
+                    var stream = fs.createReadStream(files.upload.path);
+                    s3fsImpl.writeFile(path, stream).then(function () {
+                        fs.unlink(file.path, function (err) {
+                            if (err) {
+                                console.error(err);
+                            }
+                        });
+                        res.status(200).end();
+                    });
+
                     console.log(path);
                     fs.rename(files.upload.path, "./public/" + path, function (error) {
                         if (error) {

@@ -34,7 +34,7 @@
 						<td>{{n.artist}}</td>
 						<td>{{n.title}}</td>
 						<td><a ng-show="n.path" href="{{n.path}}" target="_blank">File</a></td>
-						<td ng-click="getFile(n)"><a href="{{n.path}}">{{n.path}}</a></td>
+						<td><a href="{{n.path}}">{{n.path}}</a></td>
 						<td>
 							<a  ng-click="removeSong(n._id)" type="checkbox" class="btn btn-default" href="#/playlists">Remove</a>
 						</td>
@@ -60,13 +60,15 @@
 									</div>
 								</div>
 								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-10">
-										<input type="file" class="button icon fa-download" file-upload multiple ng-model="formData.op" name="file">
-										Select File
+									<label class="col-sm-offset-1 col-sm-10">Select File</label>
+										<input type="file" id="file" class="button icon fa-download" file-upload multiple ng-model="formData.op" name="file">
+								</div>
+								<div id="progressNumber">
+
 								</div>
 								<div class="form-group">
 									<div class="col-sm-offset-1 col-sm-10">
-										<button type="submit" lass="button alt icon fa-check">Submit song</button>
+										<button type="submit" class="button alt icon fa-check">Submit song</button>
 									</div>
 								</div>
 							</div>

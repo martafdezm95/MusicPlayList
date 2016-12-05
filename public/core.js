@@ -35,6 +35,7 @@ app.controller('mainCtrl',['$scope', '$http', 'formDataObject', '$location', '$t
     $scope.$on("fileSelected", function (event, args) {
         $scope.$apply(function () {
             //add the file object to the scope's files collection
+            console.log("File Selected: ");
             console.log(args.file);
             $scope.files = args.file;
         });
@@ -44,17 +45,22 @@ app.controller('mainCtrl',['$scope', '$http', 'formDataObject', '$location', '$t
     $http.get('/songs')
         .success(function(data) {
             $scope.songs = data.songs;
+            console.log("Songs received from GET: ");
             console.log(data);
         })
         .error(function(data) {
-            console.log('Error: ' + data);
+            console.log('Error: ');
+            console.log(data);
         });
 
 
     // when submitting the add form, send the text to the node API
     $scope.submitSong = function() {
-        $scope.fileToUpload = {}
-        console.log($scope.fileToUpload)
+        $scope.fileToUpload = {};
+
+        var file = document.getElementById("file");
+        console.log(file);
+
         if ($scope.formData.title != null && $scope.formData.artist != null) {
             $http({
                 method:"post",
@@ -66,12 +72,13 @@ app.controller('mainCtrl',['$scope', '$http', 'formDataObject', '$location', '$t
                     $scope.formData = {}; // clear the form so our user is ready to enter another
                     angular.element("input[type='file']").val(null);
                     $scope.songs = data.songs;
+                    console.log("Song Data to submit: ");
                     console.log(data);
-
                 })
                 .error(function (data) {
                     $scope.formData = {}; // clear the form so our user is ready to enter another
-                    console.log('Error: ' + data);
+                    console.log('Error: ');
+                    console.log(data);
                     angular.element("input[type='file']").val(null);
                 });
         } else {
@@ -84,10 +91,12 @@ app.controller('mainCtrl',['$scope', '$http', 'formDataObject', '$location', '$t
         $http.delete('/songs/' + id)
             .success(function(data) {
                 $scope.songs = data.songs;
+                console.log("Removing Song: ");
                 console.log(data);
             })
             .error(function(data) {
-                console.log('Error: ' + data);
+                console.log('Error Removing Song: ');
+                console.log(data);
             });
     };
 
@@ -96,6 +105,7 @@ app.controller('mainCtrl',['$scope', '$http', 'formDataObject', '$location', '$t
 app.factory('formDataObject', function() {
     return function (data) {
         var formData = new FormData();
+        console.log("song title: ")
         console.log(data.model.title);
         //need to convert our json object to a string version of json otherwise
         // the browser will do a 'toString()' on the object which will result
@@ -157,6 +167,7 @@ function openLoginModal()
     var btn = document.getElementById("myBtn");
     modal.style.display = "block";
 }
+
 $(document).ready(function() {
     $('.fragment i').on('click', function(e) { $(e.target).closest('a').remove(); });
 });

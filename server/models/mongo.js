@@ -27,7 +27,8 @@ var userSchema  = {
 var songSchema = {
     "artist" : String,
     "title" : String,
-    "path": String
+    "path": String,
+    "file": Buffer
 };
 
 // create model if not exists.
