@@ -28,11 +28,21 @@ var songSchema = {
     "artist" : String,
     "title" : String,
     "path": String,
-    "file": Buffer
+};
+
+var playlistSchema = {
+    "name" : String,
+    "songs" : {
+        "artist" : String,
+        "title"  : String,
+        "path"   : String,
+    },
 };
 
 // create model if not exists.
 module.exports.User = mongoose.model('userLogin',userSchema);
-module.exports.Songs = mongoose.model('songs',songSchema)
+module.exports.Songs = mongoose.model('songs',songSchema);
+module.exports.Playlists = mongoose.model('playlists',playlistSchema);
+
 
 

@@ -1,4 +1,6 @@
 var Song = require('./mongo').Songs;
+var AWS = require('aws-sdk');
+var s3 = new AWS.S3();
 
 module.exports= {
     show: function (callback) {

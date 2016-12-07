@@ -2,10 +2,25 @@
 	<section class="wrapper style1">
 		<div class="inner">
 			<h1 class="align-center">
-				<h2>Your playlist</h2>
-				<p>Here you'll be able to add and remove songs from your playlist</p>
+				<h2>Your playlists</h2>
+				<div>
+					<h1>Select a playlist</h1>
+					<select form="songForm" ng-model="formData.playlistID" ng-model="playlistID" ng-options="p._id as p.name for p in playlists" required>
+						<option>Select a playlist</option>
+					</select>
+					<button ng-click="deletePlaylist()">Remove Playlist</button>
+				</div>
+				<button onclick="showPlaylistTextField()">Add Playlist</button>
+				<div id="newPlaylist" class="newPlaylist">
+					<form ng-submit="createPlaylist()">
+						<input type="text" ng-model="formData.playlistName" id="playlistNameInput" required></input>
+						<button type="submit" onclick="showPlaylistTextField()">Create</button>
+					</form>
+
+				</div>
 			</h1>
 		</div>
+
 	</section>
 	<div id="main">
 		<!-- Three -->
@@ -22,7 +37,6 @@
 				</thead>
 					<tbody ng-repeat="n in songs">
 					<tr>
-						<!--<td><a href="" class="btn btn-xs btn-info"><span class="glyphicon glyphicon-tag"></span></a></td>-->
 						<td>
 							<my-audio>
 								<audio class="player">
@@ -36,7 +50,7 @@
 						<td><a ng-show="n.path" href="{{n.path}}" target="_blank">File</a></td>
 						<td><a href="{{n.path}}">{{n.path}}</a></td>
 						<td>
-							<a  ng-click="removeSong(n._id)" type="checkbox" class="btn btn-default" href="#/playlists">Remove</a>
+							<a  ng-click="deleteSong(n._id)" type="checkbox" class="btn btn-default" href="#/playlists">Remove</a>
 						</td>
 					</tr>
 					</tbody>
@@ -45,7 +59,7 @@
 				<h4>Add a song</h4>
 				<div id="todo-form" class="row">
 					<div class="col-sm-8 col-sm-offset-2 text-center">
-						<form ng-submit="submitSong()">
+						<form id="songForm" ng-submit="addSongToPlaylist()">
 							<div class="form-group">
 								<div class="form-group">
 									<label class="control-label col-sm-1" >Title:</label>

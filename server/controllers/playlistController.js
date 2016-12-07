@@ -1,7 +1,12 @@
+/**
+ * Created by Erik on 12/6/16.
+ */
 var fs = require("fs"),
     formidable = require("formidable");
-var songs = require("../models/songs")
-var Song = require("../models/mongo").Songs;
+var playlists = require("../models/playlists");
+var song = require("../models/mongo").Songs;
+var songs = require("../models/songs");
+var Playlist = require("../models/mongo").Playlists;
 var crypto = require('crypto');
 var S3FS = require('s3fs');
 var AWS = require('aws-sdk');
@@ -12,11 +17,11 @@ process.env.AWS_SECRET_ACCESS_KEY = "HZwEd7UShFq1avMfyfXbR1Ac5i0I2Lh1KNtxfd8j";
 
 module.exports = {
     showAllMemo: function(req, res, next) {
-        songs.show(function (err, rows) {
+        playlists.show(function (err, playlists) {
             if (err) {
                 res.status(400).json({error: true, mensaje: "Something went wrong"})
             } else {
-                res.status(200).json({error: false, songs: rows});
+                res.status(200).json({error: false, playlists: playlists});
             }
         });
     },
@@ -68,9 +73,14 @@ module.exports = {
                             song.title = fields.title;
                             song.path = path;
                             // inserción en la BBDD con ruta del archivo en la BBDD
-                            songs.insertMemo(song, function (err, document) {
+
+
+                            update = {$push : {songs : song}};
+
+
+                            playlists.updateMemo(fields.playlistID, update, function (err, document) {
                                 if (err) {
-                                    res.status(400).json({error: false, message: "Something went wrong"});
+                                    res.status(400).json({error: true, message: "Something went wrong"});
                                 } else {
                                     songs.show(function (err, songs) {
                                         res.status(200).json({error: false, songs: songs});
@@ -97,32 +107,51 @@ module.exports = {
                         }
                     });
                 }
-            } else {
-                res.status(200).json({error: true, message: "Not able to submit the song"})
+            } else if(fields.playlistName != null)
+            {
+
+
+                var playlist = {};
+
+                playlist.name = fields.playlistName;
+
+                playlists.insertMemo(playlist, function (err, document) {
+                    if (err) {
+                        res.status(400).json({error: true, message: "Something went wrong"});
+                    } else {
+                        songs.show(function (err, songs) {
+                            res.status(200).json({error: false, playlists: playlist});
+                        })
+                    }
+                })
+
             }
         })
+
+        //res.status(200).json({error: true, message: "No se ha podido crear la song"})
     },
     showMemo: function (req, res, next) {
-        songs.showMemo(req.params.id, function (err, document) {
+        playlists.showMemo(req.params.id, function (err, document) {
             if (err) {
                 res.status(400).json({error: true, message: "Something went wrong"})
             } else {
                 if (document) {
-                    res.status(200).json({error: false, song: document})
+                    res.status(200).json({error: false, playlist: document})
                 } else {
-                    res.status(200).json({error: false, message: "The song with id '" + req.params.id + "' does not exist."})
+                    res.status(200).json({error: false, message: "The playlist with id '" + req.params.id + "' does not exist."})
                 }
             }
         })
     },
-    deleteMemo: function (req, res, next) {
-        songs.deleteMemo(req.params.id, function (err) {
+    deleteMemo: function (req, res) {
+        console.log("Deleting Playlist with ID: ", req.params.id);
+        playlists.deleteMemo(req.params.id, function (err) {
             if (err) {
                 res.status(400).json({error: false, message: "Something went wrong"});
             } else {
                 //deleteFileFromS3();
-                songs.show(function (err, songs) {
-                    res.status(200).json({error: false, songs: songs});
+                playlists.show(function (err, playlists) {
+                    res.status(200).json({error: false, playlists: playlists});
                 })
             }
         })
@@ -136,6 +165,8 @@ function writeFileToS3(readPath, writePath)
             throw err;
         }
 
+        console.log("The Write Path: ", writePath);
+
         var params = {
             Key : writePath,
             Body: data
@@ -145,6 +176,7 @@ function writeFileToS3(readPath, writePath)
                 if(err) {
                     console.error(err);
                 }
+                console.log("temp file deleted");
             });
 
             if(err) {

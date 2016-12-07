@@ -26,17 +26,17 @@ app.config(function($routeProvider) {
 app.controller('EmptyCtrl', function($scope,$http,$location){
     $location.path("/home")
 })
-app.controller('mainCtrl',['$scope', '$http', 'formDataObject', '$location', '$timeout', function($scope, $http, formDataObject, $location, $timeout) {
+app.controller('mainCtrl',['$scope', '$http', 'songFormDataObject', 'playlistFormDataObject', '$location', '$timeout', function($scope, $http, songFormDataObject, playlistFormDataObject, $location, $timeout) {
     $scope.formData = new FormData();
     $scope.error = {};
     $scope.files = {};
+    $scope.playlists = {};
+    $scope.playlistID = {};
 
     //listen for the file selected event
     $scope.$on("fileSelected", function (event, args) {
         $scope.$apply(function () {
             //add the file object to the scope's files collection
-            console.log("File Selected: ");
-            console.log(args.file);
             $scope.files = args.file;
         });
     });
@@ -45,29 +45,35 @@ app.controller('mainCtrl',['$scope', '$http', 'formDataObject', '$location', '$t
     $http.get('/songs')
         .success(function(data) {
             $scope.songs = data.songs;
-            console.log("Songs received from GET: ");
-            console.log(data);
+            console.log("Songs received from GET: ", data);
         })
         .error(function(data) {
-            console.log('Error: ');
-            console.log(data);
+            console.log('Error: ', data);
         });
 
+    $http.get('/playlists')
+        .success(function (data) {
+            $scope.playlists = data.playlists;
+            console.log("playlists received from GET: ", data);
+        })
+        .error(function(data) {
+            console.log('Error: ', data);
+        });
 
     // when submitting the add form, send the text to the node API
-    $scope.submitSong = function() {
-        $scope.fileToUpload = {};
 
-        var file = document.getElementById("file");
-        console.log(file);
+    $scope.addSongToPlaylist = function() {
 
-        if ($scope.formData.title != null && $scope.formData.artist != null) {
+        console.log($scope.formData);
+
+        if ($scope.formData.title != null && $scope.formData.artist != null && $scope.formData.playlistID != null)
+        {
             $http({
                 method:"post",
-                url: '/songs',
+                url: '/playlists',
                 headers: { 'Content-Type': undefined },
-                transformRequest: formDataObject,
-                data: { model: $scope.formData, files: $scope.files }})
+                transformRequest: songFormDataObject,
+                data: { model: $scope.formData, files: $scope.files}})
                 .success(function (data) {
                     $scope.formData = {}; // clear the form so our user is ready to enter another
                     angular.element("input[type='file']").val(null);
@@ -83,11 +89,12 @@ app.controller('mainCtrl',['$scope', '$http', 'formDataObject', '$location', '$t
                 });
         } else {
             $scope.error.artist = true;
+            alert("Make sure you have selected a playlist");
         }
     };
     //
     // // delete a todo after checking it
-    $scope.removeSong = function(id) {
+    $scope.deleteSong = function(id) {
         $http.delete('/songs/' + id)
             .success(function(data) {
                 $scope.songs = data.songs;
@@ -99,27 +106,83 @@ app.controller('mainCtrl',['$scope', '$http', 'formDataObject', '$location', '$t
                 console.log(data);
             });
     };
+    $scope.deletePlaylist = function() {
+        var playlistIDToDelete = $scope.playlistID;
+        $http.delete('/playlists/' + playlistIDToDelete)
+            .success(function(data) {
+                $scope.playlists = data.playlists;
+                console.log("Removing Playlist: ");
+                console.log(data);
+            })
+            .error(function(data) {
+                console.log('Error Removing Playlist: ');
+                console.log(data);
+            });
+    };
 
-}])
+    $scope.createPlaylist = function() {
 
-app.factory('formDataObject', function() {
+        var playlistName = document.getElementById("playlistNameInput").value;
+
+        if (playlistName != "" && playlistName != null) {
+            $http({
+                method:"post",
+                url: '/playlists',
+                headers: { 'Content-Type': undefined },
+                transformRequest: playlistFormDataObject,
+                data: { model: $scope.formData}})
+                .success(function (data) {
+                    $scope.formData = {}; // clear the form so our user is ready to enter another
+                    location.reload();
+                })
+                .error(function (data) {
+                    $scope.formData = {}; // clear the form so our user is ready to enter another
+                    console.log('Error: ');
+                    console.log(data);
+                });
+        } else {
+
+        }
+    };
+
+
+
+}]);
+
+app.factory('songFormDataObject', function() {
     return function (data) {
+        console.log("song form data object: ", data);
         var formData = new FormData();
-        console.log("song title: ")
-        console.log(data.model.title);
-        //need to convert our json object to a string version of json otherwise
-        // the browser will do a 'toString()' on the object which will result
-        // in the value '[Object object]' on the server.
+        console.log("form data: ")
+        console.log(data.model);
+
         formData.append("title", data.model.title);
         formData.append("artist", data.model.artist);
         //now add all of the assigned files
         formData.append("upload" , data.files);
+        formData.append("playlistID", data.model.playlistID);
 
         return formData;
     };
 });
 
-app.directive('fileUpload', function () {
+app.factory('playlistFormDataObject', function() {
+    return function (data) {
+
+        var formData = new FormData();
+        console.log("playlist name: ");
+        console.log(data.model.playlistName);
+        //need to convert our json object to a string version of json otherwise
+        // the browser will do a 'toString()' on the object which will result
+        // in the value '[Object object]' on the server.
+        formData.append("playlistName", data.model.playlistName);
+
+        return formData;
+    };
+});
+
+app.directive('fileUpload', function ()
+{
     return {
         scope: true,        //create a new scope
         link: function (scope, el, attrs) {
@@ -166,6 +229,32 @@ function openLoginModal()
     // Get the button that opens the modal
     var btn = document.getElementById("myBtn");
     modal.style.display = "block";
+}
+
+function getPlaylistWithID(id, playlists)
+{
+    for(var i = 0; i< playlists.length; i++)
+    {
+        var playlist = playlists[i];
+        if(playlist._id == id)
+        {
+            return playlist;
+        }
+    }
+}
+
+function showPlaylistTextField()
+{
+    var newPlaylist = document.getElementById("newPlaylist");
+
+    if(newPlaylist.style.display == "none")
+    {
+        newPlaylist.style.display = "inline";
+    }
+    else
+    {
+        newPlaylist.style.display = "none";
+    }
 }
 
 $(document).ready(function() {
