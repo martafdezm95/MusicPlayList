@@ -1,0 +1,18 @@
+<div class="col-md-4">
+    <h2>Sign In</h2>
+    <div ng-show="error" class="box">{{errorMessage}}</div>
+    <form class="form" ng-submit="login()">
+        <div class="form-group">
+            <h4>Username</h4>
+            <input type="text" class="form-control" name="username" ng-model="loginForm.username" required>
+        </div>
+        <div class="form-group">
+            <br><h4>Password</h4>
+            <input type="password" class="form-control" name="password" ng-model="loginForm.password" required>
+        </div>
+        <div>
+            <br><button type="submit" class="button special fit" ng-disabled="disabled">Sign in</button>
+            <button href="#/" class="button fit" ng-disabled="disabled">Cancel</button>
+        </div>
+    </form>
+</div>

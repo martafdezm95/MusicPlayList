@@ -1,124 +1,60 @@
-var app = angular.module('OnlineMusicLibrary', ["ngRoute"]);
+var app = angular.module('OnlineMusicLibrary', ['ngRoute']);
 
 app.config(function($routeProvider) {
     $routeProvider
         .when("/", {
             // controller: "EmptyCtrl",
-            templateUrl: "views/frontPage.html"
+            templateUrl: "views/frontPage.html",
+            access: {restricted: false}
         })
         .when("/home", {
-            templateUrl: "views/frontPage.html"
+            templateUrl: "views/playlists.html",
+            access: {restricted: true}
+        })
+        .when('/login', {
+        templateUrl: 'views/signin.html',
+        controller: 'loginController',
+        access: {restricted: false}
+        })
+        .when('/logout', {
+            controller: 'logoutController',
+            //templateUrl: '/',
+            access: {restricted: true}
+        })
+        .when('/register', {
+            templateUrl: 'views/signup.html',
+            controller: 'registerController',
+            access: {restricted: false}
         })
         .when("/playlists", {
             controller: "mainCtrl",
-            templateUrl: "views/playLists.html"
+            templateUrl: "views/playLists.html",
+            access: {restricted: true}
         })
         .when("/songs", {
             controller: "mainCtrl",
-            templateUrl: "views/playLists.html"
+            templateUrl: "views/playLists.html",
+            access: {restricted: true}
         })
         .when("/elements", {
-            templateUrl: "views/elements.html"
+            templateUrl: "views/elements.html",
+            access: {restricted: true}
         })
         .otherwise({redirectTo: "/"});
 });
 
-app.controller('EmptyCtrl', function($scope,$http,$location){
-    $location.path("/home")
-})
-app.controller('mainCtrl',['$scope', '$http', 'formDataObject', '$location', '$timeout', function($scope, $http, formDataObject, $location, $timeout) {
-    $scope.formData = new FormData();
-    $scope.error = {};
-    $scope.files = {};
-
-    //listen for the file selected event
-    $scope.$on("fileSelected", function (event, args) {
-        $scope.$apply(function () {
-            //add the file object to the scope's files collection
-            console.log("File Selected: ");
-            console.log(args.file);
-            $scope.files = args.file;
-        });
-    });
-
-    // when landing on the page, get all todos and show them
-    $http.get('/songs')
-        .success(function(data) {
-            $scope.songs = data.songs;
-            console.log("Songs received from GET: ");
-            console.log(data);
-        })
-        .error(function(data) {
-            console.log('Error: ');
-            console.log(data);
-        });
-
-
-    // when submitting the add form, send the text to the node API
-    $scope.submitSong = function() {
-        $scope.fileToUpload = {};
-
-        var file = document.getElementById("file");
-        console.log(file);
-
-        if ($scope.formData.title != null && $scope.formData.artist != null) {
-            $http({
-                method:"post",
-                url: '/songs',
-                headers: { 'Content-Type': undefined },
-                transformRequest: formDataObject,
-                data: { model: $scope.formData, files: $scope.files }})
-                .success(function (data) {
-                    $scope.formData = {}; // clear the form so our user is ready to enter another
-                    angular.element("input[type='file']").val(null);
-                    $scope.songs = data.songs;
-                    console.log("Song Data to submit: ");
-                    console.log(data);
-                })
-                .error(function (data) {
-                    $scope.formData = {}; // clear the form so our user is ready to enter another
-                    console.log('Error: ');
-                    console.log(data);
-                    angular.element("input[type='file']").val(null);
+app.run(function ($rootScope, $location, $route, AuthService) {
+    $rootScope.$on('$routeChangeStart',
+        function (event, next, current) {
+            AuthService.getUserStatus()
+                .then(function(){
+                    if (next.access.restricted && !AuthService.isLoggedIn()){
+                        $location.path('/login');
+                        $route.reload();
+                    }
                 });
-        } else {
-            $scope.error.artist = true;
-        }
-    };
-    //
-    // // delete a todo after checking it
-    $scope.removeSong = function(id) {
-        $http.delete('/songs/' + id)
-            .success(function(data) {
-                $scope.songs = data.songs;
-                console.log("Removing Song: ");
-                console.log(data);
-            })
-            .error(function(data) {
-                console.log('Error Removing Song: ');
-                console.log(data);
-            });
-    };
-
-}])
-
-app.factory('formDataObject', function() {
-    return function (data) {
-        var formData = new FormData();
-        console.log("song title: ")
-        console.log(data.model.title);
-        //need to convert our json object to a string version of json otherwise
-        // the browser will do a 'toString()' on the object which will result
-        // in the value '[Object object]' on the server.
-        formData.append("title", data.model.title);
-        formData.append("artist", data.model.artist);
-        //now add all of the assigned files
-        formData.append("upload" , data.files);
-
-        return formData;
-    };
+        });
 });
-
 app.directive('fileUpload', function () {
     return {
         scope: true,        //create a new scope
@@ -159,20 +95,3 @@ app.directive('myAudio', function() {
     };
 });
 
-function openLoginModal()
-{
-    // Get the modal
-    var modal = document.getElementById('loginModal');
-    // Get the button that opens the modal
-    var btn = document.getElementById("myBtn");
-    modal.style.display = "block";
-}
-
-$(document).ready(function() {
-    $('.fragment i').on('click', function(e) { $(e.target).closest('a').remove(); });
-});
-$(document).ready( function() {
-    $("#load_home").on("click", function() {
-        $("#content").load("playLists.html");
-    });
-});

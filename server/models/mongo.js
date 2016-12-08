@@ -1,6 +1,7 @@
 
 var http = require('http');
 var mongoose    =   require("mongoose");
+var passportLocalMongoose = require('passport-local-mongoose');
 //mongoose.connect('mongodb://localhost:27017/stw6');
 
 var uristring = process.env.MONGOLAB_URI || 'mongodb://root:root@ds159527.mlab.com:59527/onlinemusiclibrary';
@@ -14,15 +15,13 @@ mongoose.connect(uristring, function (err, res) {
 });
 
 // create instance of Schema
-var mongoSchema =   mongoose.Schema;
+var Schema =   mongoose.Schema;
 // create schema
-var userSchema  = {
-    email: {type: String, require: true, unique: true},
-    password: {type: String, require: true},
-    name: {type: String, require: true},
-    surname: {type: String, require: true},
-    b_deleted: {type: Boolean, default: false},
-};
+var User  = Schema({
+    username: String,
+    password: String
+});
+User.plugin(passportLocalMongoose);
 
 var songSchema = {
     "artist" : String,
@@ -32,7 +31,5 @@ var songSchema = {
 };
 
 // create model if not exists.
-module.exports.User = mongoose.model('userLogin',userSchema);
-module.exports.Songs = mongoose.model('songs',songSchema)
-
-
+module.exports.User = mongoose.model('users',User);
+module.exports.Songs = mongoose.model('songs',songSchema);
