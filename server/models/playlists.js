@@ -1,13 +1,18 @@
 /**
- * Created by Erik on 12/6/16.
+ * Created by Erik on 12/6/16d
  */
 var Playlist = require('./mongo').Playlists;
 var AWS = require('aws-sdk');
 var s3 = new AWS.S3();
 
 module.exports= {
-    show: function (callback) {
-        Playlist.find({}, function(err, playlist) {
+    show: function (oid, callback) {
+        Playlist.find({"_id" : oid}, function(err, playlist) {
+            callback(err, playlist);
+        });
+    },
+    showAll: function (callback) {
+        Playlist.find(function(err, playlist) {
             callback(err, playlist);
         });
     },
@@ -16,11 +21,6 @@ module.exports= {
         newPlaylist.save(playlist, function(err, document){
             callback(err, document);
         })
-    },
-    showMemo: function (oid, callback) {
-        Playlist.findById(oid, function(err, playlist) {
-            callback(err, playlist);
-        });
     },
     updateMemo: function(oid, update, callback) {
         Playlist.findByIdAndUpdate(oid, update, function (err, numAffected) {
@@ -33,5 +33,12 @@ module.exports= {
                 callback(err, playlist);
             })
         )
+    },
+    deleteSong: function (id, path, callback) {
+        Playlist.update({"_id" : id}, {$pull: { "songs" : {path:  path}}}, (function (err, playlist) {
+                callback(err, playlist);
+            })
+        )
     }
+
 }

@@ -5,9 +5,7 @@
 				<h2>Your playlists</h2>
 				<div>
 					<h1>Select a playlist</h1>
-					<select form="songForm" ng-model="formData.playlistID" ng-model="playlistID" ng-options="p._id as p.name for p in playlists" required>
-						<option>Select a playlist</option>
-					</select>
+					<select id="selectPlaylist" onchange="updateSongTable()" ng-change="getPlaylist()" form="songForm" ng-model="playlist" ng-options="p as p.name for p in playlists" required></select>
 					<button ng-click="deletePlaylist()">Remove Playlist</button>
 				</div>
 				<button onclick="showPlaylistTextField()">Add Playlist</button>
@@ -16,7 +14,6 @@
 						<input type="text" ng-model="formData.playlistName" id="playlistNameInput" required></input>
 						<button type="submit" onclick="showPlaylistTextField()">Create</button>
 					</form>
-
 				</div>
 			</h1>
 		</div>
@@ -35,22 +32,22 @@
 					<th>Remove</th>
 				</tr>
 				</thead>
-					<tbody ng-repeat="n in songs">
+					<tbody id="songTable" ng-repeat="song in playlist.songs">
 					<tr>
 						<td>
 							<my-audio>
 								<audio class="player">
-									<source ng-src="{{n.path}}" />
+									<source ng-src="{{song.path}}" />
 								</audio>
 								<button id="play" class="play">Play</button>
 							</my-audio>
 						</td>
-						<td>{{n.artist}}</td>
-						<td>{{n.title}}</td>
-						<td><a ng-show="n.path" href="{{n.path}}" target="_blank">File</a></td>
-						<td><a href="{{n.path}}">{{n.path}}</a></td>
+						<td>{{song.artist}}</td>
+						<td>{{song.title}}</td>
+						<td><a ng-show="song.path" href="{{song.path}}" target="_blank">File</a></td>
+						<td><a href="{{song.path}}">{{song.path}}</a></td>
 						<td>
-							<a  ng-click="deleteSong(n._id)" type="checkbox" class="btn btn-default" href="#/playlists">Remove</a>
+							<a  ng-click="deleteSong(song.path)" type="checkbox" class="btn btn-default" href="#/playlists">Remove</a>
 						</td>
 					</tr>
 					</tbody>

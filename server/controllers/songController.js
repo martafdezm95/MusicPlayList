@@ -30,7 +30,7 @@ module.exports = {
 
             // If the fields are filled in
 
-            if (fields.title != null && fields.artist != null && fields.playlistID != null )
+            if (fields.title != null && fields.artist != null && fields.playlist._id != null )
             {
                 // If the file is filled in
 

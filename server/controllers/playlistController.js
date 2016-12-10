@@ -17,7 +17,7 @@ process.env.AWS_SECRET_ACCESS_KEY = "HZwEd7UShFq1avMfyfXbR1Ac5i0I2Lh1KNtxfd8j";
 
 module.exports = {
     showAllMemo: function(req, res, next) {
-        playlists.show(function (err, playlists) {
+        playlists.showAll(function (err, playlists) {
             if (err) {
                 res.status(400).json({error: true, mensaje: "Something went wrong"})
             } else {
@@ -37,13 +37,14 @@ module.exports = {
 
             if (fields.title != null && fields.artist != null && fields.playlistID != null )
             {
+                console.log("playlistID: ", fields.playlistID);
                 // If the file is filled in
 
                 if (files.upload != '' && files.upload != null)
                 {
                     // where to store the file on S3
 
-                    var path = "/files/" + files.upload.name;
+                    var path = "files/" + files.upload.name;
 
                     console.log("path of song in S3: ", path);
 
@@ -72,40 +73,23 @@ module.exports = {
                             song.artist = fields.artist;
                             song.title = fields.title;
                             song.path = path;
-                            // inserción en la BBDD con ruta del archivo en la BBDD
-
 
                             update = {$push : {songs : song}};
 
 
-                            playlists.updateMemo(fields.playlistID, update, function (err, document) {
+                            playlists.updateMemo(fields.playlistID, update, function (err) {
                                 if (err) {
                                     res.status(400).json({error: true, message: "Something went wrong"});
                                 } else {
-                                    songs.show(function (err, songs) {
-                                        res.status(200).json({error: false, songs: songs});
+                                    playlists.show(fields.playlistID, function (err, playlist) {
+                                        res.status(200).json({error: false, playlist: playlist});
                                     })
                                 }
                             })
                         }
                     });
                 } else {
-
-                    // Return, we don't want to add the song if there is no file
-
-                    var song = {};
-                    song.artist = fields.artist;
-                    song.title = fields.title;
-                    // inserción en la BBDD sin ruta del archivo en la BBDD
-                    songs.insertMemo(song, function (err, document) {
-                        if (err) {
-                            res.status(400).json({error: false, message: "Something went wrong"});
-                        } else {
-                            songs.show(function (err, songs) {
-                                res.status(200).json({error: false, songs: songs});
-                            })
-                        }
-                    });
+                    return;
                 }
             } else if(fields.playlistName != null)
             {
@@ -130,8 +114,8 @@ module.exports = {
 
         //res.status(200).json({error: true, message: "No se ha podido crear la song"})
     },
-    showMemo: function (req, res, next) {
-        playlists.showMemo(req.params.id, function (err, document) {
+    show: function (req, res, next) {
+        playlists.show(req.params.id, function (err, document) {
             if (err) {
                 res.status(400).json({error: true, message: "Something went wrong"})
             } else {
@@ -147,10 +131,23 @@ module.exports = {
         console.log("Deleting Playlist with ID: ", req.params.id);
         playlists.deleteMemo(req.params.id, function (err) {
             if (err) {
-                res.status(400).json({error: false, message: "Something went wrong"});
+                res.status(400).json({error: true, message: "Something went wrong"});
             } else {
                 //deleteFileFromS3();
-                playlists.show(function (err, playlists) {
+                playlists.showAll(function (err, playlists) {
+                    res.status(200).json({error: false, playlists: playlists});
+                })
+            }
+        })
+    },
+    deleteSong: function (req, res) {
+        console.log("Deleting Song with path: ", req.query.path, " and playlistID ", req.params.id);
+        playlists.deleteSong(req.params.id, req.query.path, function (err) {
+            if (err) {
+                res.status(400).json({error: true, message: "Something went wrong"});
+            } else {
+                //deleteFileFromS3();
+                playlists.showAll(function (err, playlists) {
                     res.status(200).json({error: false, playlists: playlists});
                 })
             }
@@ -206,8 +203,22 @@ function deleteFileFromS3(fileName)
     });
 }
 
-function getFileFromS3()
+function getFileFromS3(path)
 {
+    var params = {
+        Bucket: 'omlsongs',
+        Key: path
+    }
+    s3.getObject(params, function(err, data) {
+        if(err)
+        {
+            console.log(err);
+        }
+        else
+        {
+            console.log(data);
+        }
+    });
 
 }
 

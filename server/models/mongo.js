@@ -24,12 +24,6 @@ var userSchema  = {
     b_deleted: {type: Boolean, default: false},
 };
 
-var songSchema = {
-    "artist" : String,
-    "title" : String,
-    "path": String,
-};
-
 var playlistSchema = {
     "name" : String,
     "songs" : {
@@ -41,7 +35,6 @@ var playlistSchema = {
 
 // create model if not exists.
 module.exports.User = mongoose.model('userLogin',userSchema);
-module.exports.Songs = mongoose.model('songs',songSchema);
 module.exports.Playlists = mongoose.model('playlists',playlistSchema);
 
 

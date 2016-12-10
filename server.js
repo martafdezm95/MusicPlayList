@@ -16,22 +16,45 @@ var playlist = require('./server/controllers/playlistController');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : false}));
-app.use(express.static(path.join(__dirname ,'ficheros')));
+app.use(express.static(path.join(__dirname ,'files')));
 app.use(express.static(path.join(__dirname ,'public')));
 app.use(express.static(path.join(__dirname ,'/')));
 
 
 // Devuelve un Json con todas las songs en la bbdd
-app.get("/songs",song.showAllMemo);
+//app.get("/songs",song.showAllMemo);
 
 app.get("/playlists", playlist.showAllMemo);
 
+// app.get('/audio', function(req, res) {
+//
+//     var params = {
+//         Bucket: "omlsongs",
+//         Key: 'files/'
+//     };
+//
+//     var downloadStream = client.downloadStream(params);
+//
+//     downloadStream.on('error', function() {
+//         res.status(404).send('Not Found');
+//     });
+//     downloadStream.on('httpHeaders', function(statusCode, headers, resp) {
+//         // Set Headers
+//         res.set({
+//             'Content-Type': headers['content-type']
+//         });
+//     });
+//
+//     // Pipe download stream to response
+//     downloadStream.pipe(res);
+// });
+
 // Añade una nueva song a la bbdd y almancena el fichero si es necesario
-app.post("/songs", song.setMemo);
+//app.post("/songs", song.setMemo);
 
 app.post("/playlists", playlist.setMemo);
 
-app.delete("/songs/:id", song.deleteMemo);
+app.delete("/songs/:id", playlist.deleteSong);
 
 app.delete("/playlists/:id", playlist.deleteMemo);
 
