@@ -3823,3 +3823,13 @@
 			}
 
 		}
+h2 {
+	font-size: 3em;
+	font-weight: 300;
+	text-align: center;
+	color: rgba(255, 255, 255, 0.7);
+	display: inline-block;
+	padding-bottom: 5px;
+
+	text-shadow: 1px 1px 3px shadow-color;
+}

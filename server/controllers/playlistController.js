@@ -4,8 +4,6 @@
 var fs = require("fs"),
     formidable = require("formidable");
 var playlists = require("../models/playlists");
-var song = require("../models/mongo").Songs;
-var songs = require("../models/songs");
 var Playlist = require("../models/mongo").Playlists;
 var crypto = require('crypto');
 var S3FS = require('s3fs');
@@ -93,7 +91,7 @@ module.exports = {
                 }
             } else if(fields.playlistName != null)
             {
-
+                //You're creating a new playlist
 
                 var playlist = {};
 
@@ -103,7 +101,7 @@ module.exports = {
                     if (err) {
                         res.status(400).json({error: true, message: "Something went wrong"});
                     } else {
-                        songs.show(function (err, songs) {
+                        playlists.show(playlist._id, function (err, playlist) {
                             res.status(200).json({error: false, playlists: playlist});
                         })
                     }
@@ -115,12 +113,12 @@ module.exports = {
         //res.status(200).json({error: true, message: "No se ha podido crear la song"})
     },
     show: function (req, res, next) {
-        playlists.show(req.params.id, function (err, document) {
+        playlists.show(req.params.id, function (err, playlist) {
             if (err) {
                 res.status(400).json({error: true, message: "Something went wrong"})
             } else {
-                if (document) {
-                    res.status(200).json({error: false, playlist: document})
+                if (playlist) {
+                    res.status(200).json({error: false, playlist: playlist})
                 } else {
                     res.status(200).json({error: false, message: "The playlist with id '" + req.params.id + "' does not exist."})
                 }
