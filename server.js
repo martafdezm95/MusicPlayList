@@ -1,114 +1,106 @@
-
-//Requires
-var express     =   require("express");
-var app         =   express();
-var bodyParser  =   require("body-parser");
-var mongoUser   =   require("./models/mongo").User;
-var mongoSong   =   require("./models/mongo").Songs;
-var path        =   require("path");
-var router      =   express.Router();
-var fs          =   require("fs");
-var formidable = require("formidable");
+var playlists   =   require("./server/models/playlists");
+var playlist = require('./server/controllers/playlistController');
+var express         =   require("express");
+var logger          =   require('morgan');
+var cookieParser    =   require('cookie-parser');
+var app             =   express();
+var bodyParser      =   require("body-parser");
+var mongoUser       =   require("./server/models/mongo").User;
+var path            =   require("path");
+var router          =   express.Router();
+var fs              =   require("fs");
+var formidable      =   require("formidable");
+var crypto          =   require('crypto');
+var expressSession  =   require('express-session');
+var passport        =   require('passport');
+var debug           =   require('debug')('passport-mongo');
+var routes          =   require('./server/routes/api.js');
+var hash            =   require('bcrypt-nodejs');
+var localStrategy   =   require('passport-local' ).Strategy;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : false}));
-app.use(express.static(path.join(__dirname ,'ficheros')));
+app.use(express.static(path.join(__dirname ,'files')));
 app.use(express.static(path.join(__dirname ,'public')));
+app.use(express.static(path.join(__dirname ,'/')));
+app.use(logger('dev'));
+app.use(cookieParser());
+app.use(require('express-session')({
+    secret: 'keyboard cat',
+    resave: false,
+    saveUninitialized: false
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 
-// Devuelve un Json con todas las notas en la bbdd
-app.get("/songs",function(req,res){
-    mongoSong.find({},function(err, data){
-        // Mongo command to fetch all data from collection.
-        if(err) {
-            response = {"error" : true,"message" : "Error fetching data"};
-        } else {
-            response = {"error" : false,"message" : data};
-        }
-        res.json(response);
-    });   
-});
+// configure passport
+passport.use(new localStrategy(mongoUser.authenticate()));
+passport.serializeUser(mongoUser.serializeUser());
+passport.deserializeUser(mongoUser.deserializeUser());
 
-// Añade una nueva nota a la bbdd y almancena el fichero si es necesario
-app.post("/songs",function(req,res){
-    console.log("Post note");
-    var parse = new formidable.IncomingForm();
-    parse.parse(req, function(err,fields,files){
-        var db = new mongoSong();
-        db.artist = fields.artist;
-        db.title = fields.title;
-        db.file = files.file.name;
-        if(files.file.name != ''){
-            var name = files.file.name.replace(/ /g,"_");
-            fs.rename(files.file.path,"ficheros/"+name, function(err){
-                if(err){
-                    console.log("Error");
-                }else{
-                    db.file = name;
-                    db.save(function (err) {
-                        if (err) console.log("Error");
-                    });
-                }
-            });
-        }else{
-            db.save(function (err) {
-                if (err) console.log("Error");
-            });
-        }
-        res.writeHead(302, {'Location': 'template.html'});
-        res.end();
-    });
+// routes
+app.use('/user/', routes);
 
-});
-
-//Borra una nota de la bbdd eliminando el fichero si necesario
-app.delete("/songs/:id",function(req,res){
-    mongoSong.findById(req.params.id,function(err, data){
-        mongoSong.remove({"_id":req.params.id},function(err){
-            if(err){
-                res.writeHead(500, {'Location': '/error'});
-                res.end();
-            }else{
-                if(data.file != ""){
-                    mongoSong.find({"fichero":data.file},function (err, data2) {
-                        if (data2.length == 0){
-                            fs.unlink("ficheros/"+ data.file, function (err) {
-                                if (err) console.log("Error deleting the file");
-                            });
-                        }
-                    });
-                }
-                res.writeHead(302, {'Location': '/'});
-                res.end();
-            }
-        });
-    });
-});
-
-app.get("/login",function(req,res){
-    res.sendfile('./public/loginRegister.html');
-});
-app.get("/register",function(req,res){
-    res.sendfile('./public/register.html');
-});
-//Main page
 app.get('/', function(req, res) {
-    res.sendfile('./public/frontPage.html');
+    res.sendFile(path.join(__dirname, '../client', 'index.html'));
 });
 
-//Fichero angular
-app.get('/core.js', function(req, res) {
-    res.sendfile('./public/core.js');
-});
+
+// Devuelve un Json con todas las songs en la bbdd
+//app.get("/songs",song.showAllMemo);
+
+app.get("/playlists", playlist.showAllMemo);
+
+// app.get('/audio', function(req, res) {
+//
+//     var params = {
+//         Bucket: "omlsongs",
+//         Key: 'files/'
+//     };
+//
+//     var downloadStream = client.downloadStream(params);
+//
+//     downloadStream.on('error', function() {
+//         res.status(404).send('Not Found');
+//     });
+//     downloadStream.on('httpHeaders', function(statusCode, headers, resp) {
+//         // Set Headers
+//         res.set({
+//             'Content-Type': headers['content-type']
+//         });
+//     });
+//
+//     // Pipe download stream to response
+//     downloadStream.pipe(res);
+// });
+
+// Añade una nueva song a la bbdd y almancena el fichero si es necesario
+//app.post("/songs", song.setMemo);
+
+app.post("/playlists", playlist.setMemo);
+
+app.delete("/songs/:id", playlist.deleteSong);
+
+app.delete("/playlists/:id", playlist.deleteMemo);
 
 //Server error
 app.get('/error', function(req,res){
     res.status(404).send('<h1>500 SERVER ERROR</h1>')
 });
 
-//Not Found
-app.get('*', function(req,res){
-    console.log(req.path);
-   res.status(404).send('<h1>404 This is not the Webpage you are looking for</h1>')
+// error hndlers
+app.use(function(req, res, next) {
+    var err = new Error('Not Found');
+    err.status = 404;
+    next(err);
+});
+
+app.use(function(err, req, res) {
+    res.status(err.status || 500);
+    res.end(JSON.stringify({
+        message: err.message,
+        error: {}
+    }));
 });
 
 app.listen(process.env.PORT || 8080);

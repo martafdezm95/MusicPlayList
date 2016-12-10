@@ -1,0 +1,39 @@
+{
+  "name": "angular-kendo-window",
+  "version": "2.2.5",
+  "description": "Angular directive to dynamically create Kendo UI windows with a separate template and controller.",
+  "main": [
+    "angular-kendo-window.js",
+    "window.html"
+  ],
+  "keywords": [
+    "angular",
+    "kendoui",
+    "kendo-ui",
+    "kendo-window",
+    "modal"
+  ],
+  "authors": [
+    "kjartanvalur"
+  ],
+  "license": "MIT",
+  "moduleType": "globals",
+  "homepage": "https://github.com/kjartanvalur/angular-kendo-window",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "_release": "2.2.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.2.5",
+    "commit": "d8ae69b1756f4d6bda11b1be863ef19a20065db3"
+  },
+  "_source": "https://github.com/kjartanvalur/angular-kendo-window.git",
+  "_target": "^2.2.5",
+  "_originalSource": "angular-kendo-window",
+  "_direct": true
+}

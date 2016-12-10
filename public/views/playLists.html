@@ -1,0 +1,93 @@
+
+<div class="container-fluid" >
+	<section class="wrapper style1">
+		<div class="inner">
+			<h1 class="align-center">
+				<h2>Your playlists</h2>
+				<div>
+					<h1>Select a playlist</h1>
+					<select id="selectPlaylist" onchange="updateSongTable()" ng-change="getPlaylist()" form="songForm" ng-model="playlist" ng-options="p as p.name for p in playlists" required></select>
+					<button ng-click="deletePlaylist()">Remove Playlist</button>
+				</div>
+				<button onclick="showPlaylistTextField()">Add Playlist</button>
+				<div id="newPlaylist" class="newPlaylist">
+					<form ng-submit="createPlaylist()">
+						<input type="text" ng-model="formData.playlistName" id="playlistNameInput" required></input>
+						<button type="submit" onclick="showPlaylistTextField()">Create</button>
+					</form>
+				</div>
+			</h1>
+		</div>
+
+	</section>
+	<div id="main">
+		<!-- Three -->
+		<section class="wrapper ">
+			<div class="inner">
+				<table class="table table-hover"><thead>
+				<tr>
+					<th>Play</th>
+					<th>Artist</th>
+					<th>Title</th>
+					<th>File</th>
+					<th>Remove</th>
+				</tr>
+				</thead>
+					<tbody id="songTable" ng-repeat="song in playlist.songs">
+					<tr>
+						<td>
+							<my-audio>
+								<audio class="player">
+									<source ng-src="{{song.path}}" />
+								</audio>
+								<button id="play" class="play">Play</button>
+							</my-audio>
+						</td>
+						<td>{{song.artist}}</td>
+						<td>{{song.title}}</td>
+						<td><a ng-show="song.path" href="{{song.path}}" target="_blank">File</a></td>
+						<td><a href="{{song.path}}">{{song.path}}</a></td>
+						<td>
+							<a  ng-click="deleteSong(song.path)" type="checkbox" class="btn btn-default" href="#/playlists">Remove</a>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+				</br></br>
+				<h4>Add a song</h4>
+				<div id="todo-form" class="row">
+					<div class="col-sm-8 col-sm-offset-2 text-center">
+						<form id="songForm" ng-submit="addSongToPlaylist()">
+							<div class="form-group">
+								<div class="form-group">
+									<label class="control-label col-sm-1" >Title:</label>
+									<div class="col-sm-5">
+										<input type="text" class="form-control input-lg text-center" placeholder="Title" ng-model="formData.title" required>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="control-label col-sm-1" >Artist:</label>
+									<div class="col-sm-5">
+										<input type="text" class="form-control input-lg text-center" placeholder="Artist" ng-model="formData.artist" required>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-offset-1 col-sm-10">Select File</label>
+										<input type="file" id="file" class="button icon fa-download" file-upload multiple ng-model="formData.op" name="file">
+								</div>
+								<div id="progressNumber">
+
+								</div>
+								<div class="form-group">
+									<div class="col-sm-offset-1 col-sm-10">
+										<button type="submit" class="button alt icon fa-check">Submit song</button>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</section>
+	</div>
+</div>

@@ -1,0 +1,80 @@
+<!-- index.html -->
+<!doctype html>
+
+<!-- ASSIGN OUR ANGULAR MODULE -->
+<html ng-app="OnlineMusicLibrary" lang="en">
+<head>
+	<!-- META -->
+	<meta charset="utf-8">
+	<base href="/">
+	<meta name="viewport" http-equiv="refresh" content="width=device-width, initial-scale=1"><!-- Optimize mobile viewport -->
+	<title>Online Music Library</title>
+
+	<!-- SCROLLS -->
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<link rel="stylesheet" href="assets/css/custom.css"/>
+
+
+	<!-- SPELLS -->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script><!-- load jquery -->
+	<script src="../bower_components/angular/angular.min.js"></script><!-- load angular -->
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	<script src="../bower_components/angular-route/angular-route.min.js"></script>
+
+	<script src="core.js" type="text/javascript"></script>
+
+	<script src="//code.jquery.com/jquery-2.2.1.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular.min.js"></script>
+	<script src="//cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.9/angular-route.min.js"></script>
+	<script src="./core.js"></script>
+	<script src="./services.js"></script>
+	<script src="./controllers.js"></script>
+
+</head>
+
+<!-- SET THE CONTROLLER AND GET ALL TODOS -->
+<!--<body ng-controller="mainController">-->
+<body >
+<!-- Header -->
+<div id="header">
+	<h1><a href="#/">OnlineMusicLibrary<span>M7011E project</span></a></h1>
+	<a href="#menu">Menu</a>
+</div>
+<!-- Nav -->
+<nav id="menu">
+	<ul class="links">
+		<li><a href="#/home">Home</a></li>
+		<li><a href="#/playlists">Playlists</a></li>
+		<li><a href="#/elements">Elements</a></li>
+		<li><a href="#/logout">Logout</a></li>
+	</ul>
+</nav>
+
+<div class="container-fluid">
+
+	<!-- ANGULAR DYNAMIC CONTENT -->
+	<div ng-view></div>
+
+</div>
+
+<!-- Footer -->
+<footer id="footer">
+	<div class="copyright">
+		<ul class="icons">
+			<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+			<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+			<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+			<li><a href="#" class="icon fa-snapchat"><span class="label">Snapchat</span></a></li>
+		</ul>
+		&copy; Untitled. Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com">Coverr</a>. Video: <a href="https://coverr.co">Coverr</a>.
+	</div>
+</footer>
+
+<!-- Scripts -->
+<script src="assets/js/jquery.min.js"></script>
+<script src="assets/js/jquery.scrolly.min.js"></script>
+<script src="assets/js/skel.min.js"></script>
+<script src="assets/js/util.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
