@@ -45,7 +45,8 @@ router.post('/login', function(req, res, next) {
 });
 
 router.get('/logout', function(req, res) {
-    req.logout();
+    req.logout()
+    console.log("OUT!")
     res.status(200).json({
         status: 'Bye!'
     });

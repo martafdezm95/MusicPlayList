@@ -1,18 +1,42 @@
-<div class="col-md-4">
+<style>
+    html {
+        background: url(https://dl.dropboxusercontent.com/u/159328383/background.jpg) no-repeat center center fixed;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+    }
+    body {
+        background: transparent;
+    }
+
+    }
+    span {
+        background: transparent;
+        min-width: 53px;
+        border: none;
+    i {
+        font-size: 1.5em;
+        color: rgba(255, 255, 255, 0.2);
+    }
+    }
+
+</style>
+<div style="text-align:center;">
     <h2>Sign Up</h2>
     <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div>
     <form class="form" ng-submit="register()">
         <div class="form-group">
             <h4>Username</h4>
-            <input type="text" class="form-control" name="username" ng-model="registerForm.username" required>
+            <input style="margin:0px auto; display:block;text-align:center;width: 500px;"type="text" class="form-control" name="username" ng-model="registerForm.username" required>
         </div>
         <div class="form-group">
             <h4>Password</h4>
-            <input type="password" class="form-control" name="password" ng-model="registerForm.password" required>
+            <input style="margin:0px auto; display:block;text-align:center;width: 500px;" type="password" class="form-control" name="password" ng-model="registerForm.password" required>
         </div>
         <div>
-            <br><button type="submit" class="button special fit" ng-disabled="disabled">Sign Up</button>
-            <button href="#/" class="button fit" ng-disabled="disabled">Cancel</button>
+            <br><button style="margin:0px auto; display:block;width: 300px;"  type="submit" class="button special fit" ng-disabled="disabled">Sign Up</button>
         </div>
     </form>
+    <a style="margin:0px auto; display:block;width: 300px;" id="myBtnCancel" href="#/" data-rel="popup" data-position-to="window" class="button fit" >Cancel</a>
 </div>

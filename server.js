@@ -15,10 +15,11 @@ var crypto          =   require('crypto');
 var song            =   require('./server/controllers/songController');
 var expressSession  =   require('express-session');
 var passport        =   require('passport');
-var localStrategy   =   require('passport-local' ).Strategy;
 var debug           =   require('debug')('passport-mongo');
 var routes          =   require('./server/routes/api.js');
 var hash            =   require('bcrypt-nodejs')
+
+var localStrategy   =   require('passport-local' ).Strategy;
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : false}));
