@@ -273,9 +273,7 @@ function updateSongTable()
 
     $('#songTable').load(document.URL + ' #songTable');
 }
-function getNewSongButton(){
 
-}
 function showPlaylistTextField()
 {
     var newPlaylist = document.getElementById("newPlaylist");
@@ -289,6 +287,7 @@ function showPlaylistTextField()
         newPlaylist.style.display = "none";
     }
 }
+
 function showAddSongsForm()
 {
     var newSong = document.getElementById("newSong");
