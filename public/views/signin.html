@@ -1,36 +1,6 @@
-<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
-<script>
-    $(function() {
-
-        if (localStorage.chkbx && localStorage.chkbx != '') {
-            $('#remember_me').attr('checked', 'checked');
-            $('#username').val(localStorage.usrname);
-            $('#pass').val(localStorage.pass);
-        } else {
-            $('#remember_me').removeAttr('checked');
-            $('#username').val('');
-            $('#pass').val('');
-        }
-
-        $('#remember_me').click(function() {
-
-            if ($('#remember_me').is(':checked')) {
-                // save username and password
-                localStorage.usrname = $('#username').val();
-                localStorage.pass = $('#pass').val();
-                localStorage.chkbx = $('#remember_me').val();
-            } else {
-                localStorage.usrname = '';
-                localStorage.pass = '';
-                localStorage.chkbx = '';
-            }
-        });
-    });
-
-</script>
 <style>
     html {
-        background: url(https://dl.dropboxusercontent.com/u/159328383/background.jpg) no-repeat center center fixed;
+        background: url("../images/backgroundLogInUp.jpg") no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -49,12 +19,9 @@
         font-size: 1.5em;
         color: rgba(255, 255, 255, 0.2);
     }
-
-
 </style>
 <div style="text-align:center;" >
-    <br>
-    <h2 >Log in</h2>
+    <br><br><h2>Log in</h2>
     <div ng-show="error" class="box">{{errorMessage}}</div>
         <form class="form" ng-submit="login()">
             <div class="form-group">
@@ -66,9 +33,8 @@
                 <input style="margin:0px auto; display:block;text-align:center;width: 500px;" id="pass" type="password" class="form-control" name="password" placeholder= "Password..." ng-model="loginForm.password" required >
             </div>
             <div>
-                <input type="checkbox" value="remember-me" id="remember_me"> Remember me
                 <br><label>Already not registered?<a href="#/register"> Do it now!</a></label>
-                <br><button style="margin:0px auto; display:block;width: 300px;" type="submit" class="button special fit" ng-disabled="disabled">Sign in</button>
+                <button style="margin:0px auto; display:block;width: 300px;" type="submit" class="button special fit" ng-disabled="disabled">Sign in</button>
                 <br><a style="margin:0px auto; display:block;width: 300px;" id="myBtnCancel" href="#/" data-rel="popup" data-position-to="window" class="button special fit" >Cancel</a>
             </div>
         </form>

@@ -15,7 +15,7 @@ process.env.AWS_SECRET_ACCESS_KEY = "HZwEd7UShFq1avMfyfXbR1Ac5i0I2Lh1KNtxfd8j";
 
 module.exports = {
     showAllMemo: function(req, res, next) {
-        playlists.showAll(function (err, playlists) {
+        playlists.showAll(function (err, .-) {
             if (err) {
                 res.status(400).json({error: true, mensaje: "Something went wrong"})
             } else {

@@ -5,11 +5,16 @@
 			<h1 class="align-center">
 				<h2>Your playlists</h2>
 				<div>
-					<h1>Select a playlist</h1>
-					<select id="selectPlaylist" onchange="updateSongTable()" ng-change="getPlaylist()" form="songForm" ng-model="playlist" ng-options="p as p.name for p in playlists" required></select>
-					<button ng-click="deletePlaylist()">Remove Playlist</button>
+					<h4>Select a playlist</h4>
+					<select id="selectPlaylist" onchange="updateSongTable()" ng-change="getPlaylist()" form="songForm" ng-model="playlist" ng-options="p as p.name for p in playlists " required></select>
+					<br>
+					<td>
+						<form>
+							<button onclick="showPlaylistTextField()">Add Playlist</button>
+							<button ng-click="deletePlaylist()">Remove Playlist</button>
+						</form>
+					</td>
 				</div>
-				<button onclick="showPlaylistTextField()">Add Playlist</button>
 				<div id="newPlaylist" class="newPlaylist">
 					<form ng-submit="createPlaylist()">
 						<input type="text" ng-model="formData.playlistName" id="playlistNameInput" required></input>
@@ -20,10 +25,54 @@
 		</div>
 
 	</section>
-	<div id="main">
+	<h1 id="main">
 		<!-- Three -->
 		<section class="wrapper ">
 			<div class="inner">
+			<span class="pull-left" style="margin:0px auto; display:block;text-align:center;">
+				<h2>{{ playlist.name }}</h2>
+			</span>
+				<div id="newSongButton" class="newSongButton" style="display: none; text-indent:20px;" ">
+					<br><td>
+					<button onclick="showAddSongsForm()">Add Songs to the playlist!</button>
+					</td>
+				</div>
+				<div id="newSong" class="newSong" style="display: none;">
+					<br><br><br><br><br><br><br>
+					<h4>Add a song</h4>
+					<div id="todo-form" class="row">
+						<div class="col-sm-8 col-sm-offset-2 text-center">
+							<form id="songForm" ng-submit="addSongToPlaylist()">
+								<div class="form-group">
+									<div class="form-group">
+										<label class="control-label col-sm-1" >Title:</label>
+										<div class="col-sm-5">
+											<input type="text" class="form-control input-lg text-center" placeholder="Title" ng-model="formData.title" required>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="control-label col-sm-1" >Artist:</label>
+										<div class="col-sm-5">
+											<input type="text" class="form-control input-lg text-center" placeholder="Artist" ng-model="formData.artist" required>
+										</div>
+									</div>
+									<div class="form-group">
+										<label class="col-sm-offset-1 col-sm-10">Select File</label>
+										<input type="file" id="file" class="button icon fa-download" file-upload multiple ng-model="formData.op" name="file">
+									</div>
+									<div id="progressNumber">
+
+									</div>
+									<div class="form-group">
+										<div class="col-sm-offset-1 col-sm-10">
+											<button type="submit" class="button alt icon fa-check">Submit song</button>
+										</div>
+									</div>
+								</div>
+							</form>
+						</div>
+					</div>
+				</div>
 				<table class="table table-hover"><thead>
 				<tr>
 					<th>Play</th>
@@ -54,39 +103,6 @@
 					</tbody>
 				</table>
 				</br></br>
-				<h4>Add a song</h4>
-				<div id="todo-form" class="row">
-					<div class="col-sm-8 col-sm-offset-2 text-center">
-						<form id="songForm" ng-submit="addSongToPlaylist()">
-							<div class="form-group">
-								<div class="form-group">
-									<label class="control-label col-sm-1" >Title:</label>
-									<div class="col-sm-5">
-										<input type="text" class="form-control input-lg text-center" placeholder="Title" ng-model="formData.title" required>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="control-label col-sm-1" >Artist:</label>
-									<div class="col-sm-5">
-										<input type="text" class="form-control input-lg text-center" placeholder="Artist" ng-model="formData.artist" required>
-									</div>
-								</div>
-								<div class="form-group">
-									<label class="col-sm-offset-1 col-sm-10">Select File</label>
-										<input type="file" id="file" class="button icon fa-download" file-upload multiple ng-model="formData.op" name="file">
-								</div>
-								<div id="progressNumber">
-
-								</div>
-								<div class="form-group">
-									<div class="col-sm-offset-1 col-sm-10">
-										<button type="submit" class="button alt icon fa-check">Submit song</button>
-									</div>
-								</div>
-							</div>
-						</form>
-					</div>
-				</div>
 			</div>
 		</section>
 	</div>

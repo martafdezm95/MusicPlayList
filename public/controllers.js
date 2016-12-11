@@ -268,9 +268,14 @@ app.factory('createPlaylistFormDataObject', function() {
 
 function updateSongTable()
 {
+    var newPlaylist = document.getElementById("newSongButton");
+    newPlaylist.style.display = "inline";
+
     $('#songTable').load(document.URL + ' #songTable');
 }
+function getNewSongButton(){
 
+}
 function showPlaylistTextField()
 {
     var newPlaylist = document.getElementById("newPlaylist");
@@ -282,5 +287,18 @@ function showPlaylistTextField()
     else
     {
         newPlaylist.style.display = "none";
+    }
+}
+function showAddSongsForm()
+{
+    var newSong = document.getElementById("newSong");
+
+    if(newSong.style.display == "none")
+    {
+        newSong.style.display = "inline";
+    }
+    else
+    {
+        newSong.style.display = "none";
     }
 }

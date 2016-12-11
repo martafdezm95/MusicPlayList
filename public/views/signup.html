@@ -1,6 +1,6 @@
 <style>
     html {
-        background: url(https://dl.dropboxusercontent.com/u/159328383/background.jpg) no-repeat center center fixed;
+        background: url("../images/backgroundLogInUp.jpg") no-repeat center center fixed;
         -webkit-background-size: cover;
         -moz-background-size: cover;
         -o-background-size: cover;
@@ -22,7 +22,7 @@
 
 </style>
 <div style="text-align:center;">
-    <h2>Sign Up</h2>
+    <br><br><h2>Sign Up</h2>
     <div ng-show="error" class="alert alert-danger">{{errorMessage}}</div>
     <form class="form" ng-submit="register()">
         <div class="form-group">
@@ -30,12 +30,12 @@
             <input style="margin:0px auto; display:block;text-align:center;width: 500px;"type="text" class="form-control" name="username" ng-model="registerForm.username" required>
         </div>
         <div class="form-group">
-            <h4>Password</h4>
+            <br><h4>Password</h4>
             <input style="margin:0px auto; display:block;text-align:center;width: 500px;" type="password" class="form-control" name="password" ng-model="registerForm.password" required>
         </div>
         <div>
             <br><button style="margin:0px auto; display:block;width: 300px;"  type="submit" class="button special fit" ng-disabled="disabled">Sign Up</button>
+            <br><a style="margin:0px auto; display:block;width: 300px;" id="myBtnCancel" href="#/" data-rel="popup" data-position-to="window" class="button fit" >Cancel</a>
         </div>
     </form>
-    <a style="margin:0px auto; display:block;width: 300px;" id="myBtnCancel" href="#/" data-rel="popup" data-position-to="window" class="button fit" >Cancel</a>
 </div>
