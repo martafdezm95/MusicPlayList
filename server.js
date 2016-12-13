@@ -7,16 +7,24 @@ var app             =   express();
 var bodyParser      =   require("body-parser");
 var mongoUser       =   require("./server/models/mongo").User;
 var path            =   require("path");
-var router          =   express.Router();
 var fs              =   require("fs");
 var formidable      =   require("formidable");
 var crypto          =   require('crypto');
-var expressSession  =   require('express-session');
 var passport        =   require('passport');
 var debug           =   require('debug')('passport-mongo');
 var routes          =   require('./server/routes/api.js');
-var hash            =   require('bcrypt-nodejs');
 var localStrategy   =   require('passport-local' ).Strategy;
+var s3 = require('s3');
+
+process.env.AWS_ACCESS_KEY_ID = "AKIAIS3RUJLQVYLPDPAQ";
+process.env.AWS_SECRET_ACCESS_KEY = "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";
+
+var client = s3.createClient({
+    s3options: {
+        accessKeyId: "AKIAIS3RUJLQVYLPDPAQ",
+        secretAccessKey: "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"
+    }
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended" : false}));
@@ -49,39 +57,38 @@ app.get('/', function(req, res) {
 // Devuelve un Json con todas las songs en la bbdd
 //app.get("/songs",song.showAllMemo);
 
-app.get("/playlists", playlist.showAllMemo);
+app.get("/playlists:id", playlist.showAllPlaylists);
 
-// app.get('/audio', function(req, res) {
-//
-//     var params = {
-//         Bucket: "omlsongs",
-//         Key: 'files/'
-//     };
-//
-//     var downloadStream = client.downloadStream(params);
-//
-//     downloadStream.on('error', function() {
-//         res.status(404).send('Not Found');
-//     });
-//     downloadStream.on('httpHeaders', function(statusCode, headers, resp) {
-//         // Set Headers
-//         res.set({
-//             'Content-Type': headers['content-type']
-//         });
-//     });
-//
-//     // Pipe download stream to response
-//     downloadStream.pipe(res);
-// });
+app.get('/audio', function(req, res) {
 
-// Añade una nueva song a la bbdd y almancena el fichero si es necesario
-//app.post("/songs", song.setMemo);
+    var params = {
+        Bucket: 'omlsongs',
+        Key: req.query.path,
+    };
 
-app.post("/playlists", playlist.setMemo);
+    var downloadStream = client.downloadStream(params);
+
+    downloadStream.on('error', function() {
+        res.status(404).send('Not Found');
+    });
+    downloadStream.on('httpHeaders', function(statusCode, headers, resp) {
+        // Set Headers
+        res.set({
+            'Content-Type': headers['content-type']
+        });
+    });
+
+    // Pipe download stream to response
+    downloadStream.pipe(res);
+});
+
+app.post("/playlists", playlist.setPlaylist);
+
+app.get("/user", playlist.getUser);
 
 app.delete("/songs/:id", playlist.deleteSong);
 
-app.delete("/playlists/:id", playlist.deleteMemo);
+app.delete("/playlists/:id", playlist.deletePlaylist);
 
 //Server error
 app.get('/error', function(req,res){

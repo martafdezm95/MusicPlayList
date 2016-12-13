@@ -6,7 +6,7 @@
 				<h2>Your playlists</h2>
 				<div>
 					<h1>Select a playlist</h1>
-					<select id="selectPlaylist" onchange="updateSongTable()" ng-change="getPlaylist()" form="songForm" ng-model="playlist" ng-options="p as p.name for p in playlists" required></select>
+					<select id="selectPlaylist" onchange="updateSongTable()" ng-change="getPlaylist(playlist)" form="songForm" ng-model="playlist" ng-options="p as p.name for p in playlists" required></select>
 					<button ng-click="deletePlaylist()">Remove Playlist</button>
 				</div>
 				<button onclick="showPlaylistTextField()">Add Playlist</button>
@@ -25,6 +25,7 @@
 		<section class="wrapper ">
 			<div class="inner">
 				<table class="table table-hover"><thead>
+				<img id="spinner" style="display:none" src="/images/ajax-loader.gif" alt="">
 				<tr>
 					<th>Play</th>
 					<th>Artist</th>
@@ -36,12 +37,10 @@
 					<tbody id="songTable" ng-repeat="song in playlist.songs">
 					<tr>
 						<td>
-							<my-audio>
-								<audio class="player">
-									<source ng-src="{{song.path}}" />
-								</audio>
-								<button id="play" class="play">Play</button>
-							</my-audio>
+							<button ng-click="playTunes(song.path)">Play</button>
+							<button ng-click="stopTunes(song.path)">Pause</button>
+							<div>
+							</div>
 						</td>
 						<td>{{song.artist}}</td>
 						<td>{{song.title}}</td>

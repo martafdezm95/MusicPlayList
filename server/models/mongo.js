@@ -14,22 +14,24 @@ mongoose.connect(uristring, function (err, res) {
 
 // create instance of Schema
 var Schema =   mongoose.Schema;
-// create schema
-var User  = Schema({
-    username: String,
-    password: String
-});
-User.plugin(passportLocalMongoose);
 
-var playlistSchema = {
+var Playlist = Schema({
     "name" : String,
     "songs" : {
         "artist" : String,
         "title"  : String,
         "path"   : String,
     },
-};
+});
+
+// create schema
+var User  = Schema({
+    username: String,
+    password: String,
+    "playlists" : [Playlist],
+});
+User.plugin(passportLocalMongoose);
 
 // create model if not exists.
-module.exports.Playlists = mongoose.model('playlists',playlistSchema);
-module.exports.User = mongoose.model('users',User);
+module.exports.User = mongoose.model('users', User);
+module.exports.Playlist = mongoose.model('playlists', Playlist);

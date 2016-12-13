@@ -73,19 +73,14 @@ angular.module('OnlineMusicLibrary').controller('registerController',
             };
 
         }]);
-// angular.module('OnlineMusicLibrary')
-//     .controller('EmptyCtrl',
-//     ['$scope', '$http', '$location',
-//         function($scope, $http, $location){
-//     $location.path("/home")
-// }]);
-angular.module('OnlineMusicLibrary').controller('mainCtrl', ['$scope', '$http', 'addSongFormDataObject', 'createPlaylistFormDataObject', '$location', '$timeout', function($scope, $http, addSongFormDataObject, createPlaylistFormDataObject, $location, $timeout)
+angular.module('OnlineMusicLibrary').controller('mainCtrl', ['$scope', '$http', 'addSongFormDataObject', 'createPlaylistFormDataObject', '$location', '$timeout', 'AuthService', function($scope, $http, addSongFormDataObject, createPlaylistFormDataObject, $location, $timeout, AuthService)
 {
+    $scope.currentUser = {};
+    $scope.playlists = $scope.currentUser.playlists;
     $scope.formData = new FormData();
     $scope.error = {};
     $scope.uploadFiles = {};
     $scope.downloadFiles = {};
-    $scope.playlists = {};
     $scope.playlist = {};
 
     //listen for the file selected event
@@ -96,51 +91,54 @@ angular.module('OnlineMusicLibrary').controller('mainCtrl', ['$scope', '$http', 
         });
     });
 
-    // when landing on the page, get all todos and show them
-    // $http.get('/songs')
-    //     .success(function(data) {
-    //         $scope.songs = data.songs;
-    //         console.log("Songs received from GET: ", data);
-    //     })
-    //     .error(function(data) {
-    //         console.log('Error: ', data);
-    //     });
 
-    $http.get('/playlists')
+    // Whenever we load the page check the requests to see if there is a current user
+
+    $http.get('/user')
         .success(function (data) {
-            $scope.playlists = data.playlists;
-            console.log("playlists received from GET: ", data);
+            $scope.currentUser = data.user;
+            $scope.playlists = data.user.playlists;
+            console.log("user received from GET: ", data);
         })
         .error(function(data) {
             console.log('Error: ', data);
         });
 
+    $scope.playTunes = function(path)
+    {
+        playTunes(path);
+    }
+    $scope.stopTunes = function()
+    {
+        stopTunes();
+    }
+
     // when submitting the add form, send the text to the node API
 
-    $scope.addSongToPlaylist = function() {
-
+    $scope.addSongToPlaylist = function()
+    {
         console.log($scope.formData);
-
         if ($scope.formData.title != null && $scope.formData.artist != null && $scope.playlist != null)
         {
             $http({
                 method:"post",
                 url: '/playlists',
+                params: {userId : $scope.currentUser._id},
                 headers: { 'Content-Type': undefined },
                 transformRequest: addSongFormDataObject,
                 data: { model: $scope.formData, playlist: $scope.playlist, files: $scope.uploadFiles,}})
                 .success(function (data) {
                     $scope.formData = {}; // clear the form so our user is ready to enter another
                     angular.element("input[type='file']").val(null);
-                    $scope.playlist = data.playlist[0];
-                    $http.get('/playlists')
-                        .success(function (data) {
-                            $scope.playlists = data.playlists;
-                            console.log("playlists received from GET: ", data);
-                        })
-                        .error(function(data) {
-                            console.log('Error: ', data);
-                        });
+                    location.reload();
+                    $scope.currentUser = data.user;
+                    $scope.playlists = data.user.playlists;
+                    var id = $scope.playlist._id;
+                    var playlists = $scope.playlists;
+                    $scope.playlist = getPlaylistWithId(id, playlists);
+
+                    getFileFromS3(playlists[0].songs[0].path);
+
                     updateSongTable();
                     console.log("Song Data to submit: ");
                     console.log(data);
@@ -157,28 +155,19 @@ angular.module('OnlineMusicLibrary').controller('mainCtrl', ['$scope', '$http', 
         }
     };
 
-    $scope.getPlaylist = function () {
-        var playlist = $scope.playlist;
-        console.log("The playlist being iterated is: ", playlist);
-        var playlists = $scope.playlists;
-
-        console.log("The playlists to choose from are: ", playlists);
+    $scope.getPlaylist  = function (playlist) {
+        $scope.playlist = playlist;
     }
 
     // delete a todo after checking it
     $scope.deleteSong = function(path) {
-        $http.delete('/songs/' + $scope.playlist._id, {params: {path: path}})
+        $http.delete('/songs/' + $scope.currentUser._id, {params: {songPath: path, playlistID : $scope.playlist._id}})
             .success(function(data) {
                 console.log("Data after deleting song: ", data);
-                $scope.playlist[0] = data.playlists[0];
-                $http.get('/playlists')
-                    .success(function (data) {
-                        $scope.playlists = data.playlists;
-                        console.log("playlists received from GET: ", data);
-                    })
-                    .error(function(data) {
-                        console.log('Error: ', data);
-                    });
+                $scope.currentUser = data.user;
+                $scope.playlists = data.user.playlists;
+                location.reload();
+
                 updateSongTable();
                 console.log("Removing Song: ");
                 console.log(data);
@@ -188,16 +177,17 @@ angular.module('OnlineMusicLibrary').controller('mainCtrl', ['$scope', '$http', 
                 console.log(data);
             });
     };
+
     $scope.deletePlaylist = function() {
-        var playlistIDToDelete = $scope.playlist._id;
-        $http.delete('/playlists/' + playlistIDToDelete)
+        $http.delete('/playlists/' + $scope.playlist._id, {params : {userId : $scope.currentUser._id}})
             .success(function(data) {
                 $scope.playlists = data.playlists;
                 console.log("Removing Playlist: ");
                 console.log(data);
-                $http.get('/playlists')
+                $http.get('/playlists' + $scope.currentUser._id)
                     .success(function (data) {
-                        $scope.playlists = data.playlists;
+                        $scope.playlists = data.user.playlists;
+                        location.reload();
                         console.log("playlists received from GET: ", data);
                     })
                     .error(function(data) {
@@ -218,6 +208,7 @@ angular.module('OnlineMusicLibrary').controller('mainCtrl', ['$scope', '$http', 
             $http({
                 method:"post",
                 url: '/playlists',
+                params: {userId : $scope.currentUser._id},
                 headers: { 'Content-Type': undefined },
                 transformRequest: createPlaylistFormDataObject,
                 data: { model: $scope.formData}})
@@ -232,14 +223,11 @@ angular.module('OnlineMusicLibrary').controller('mainCtrl', ['$scope', '$http', 
                 });
         }
     };
-
-
-
 }]);
 
 app.factory('addSongFormDataObject', function() {
     return function (data) {
-        console.log("song form data object: ", data);
+
         var formData = new FormData();
 
         formData.append("title", data.model.title);
@@ -249,7 +237,6 @@ app.factory('addSongFormDataObject', function() {
         formData.append("upload" , data.files);
 
         console.log("form data after appending: ", formData);
-
 
         return formData;
     };
@@ -266,9 +253,15 @@ app.factory('createPlaylistFormDataObject', function() {
     };
 });
 
-function updateSongTable()
+function getPlaylistWithId(id, playlists)
 {
-    $('#songTable').load(document.URL + ' #songTable');
+    for(var i = 0; i < playlists.length; i++)
+    {
+        if(playlists[i]._id == id)
+        {
+            return playlists[i];
+        }
+    }
 }
 
 function showPlaylistTextField()
@@ -283,4 +276,74 @@ function showPlaylistTextField()
     {
         newPlaylist.style.display = "none";
     }
+}
+
+// Update Functions
+
+function updateSongTable()
+{
+    $('#songTable').load(document.URL + ' #songTable');
+}
+
+//Audio functions
+
+window.AudioContext = window.AudioContext || window.webkitAudioContext;
+var context = new AudioContext();
+var currentSongPath;
+var source;
+
+hideSpinner = function(){
+    var spinner = document.getElementById('spinner');
+    spinner.style.display = 'none';
+};
+showSpinner = function(){
+    var spinner = document.getElementById('spinner');
+    spinner.style.display = 'block';
+}
+
+function stopTunes()
+{
+    if(context.state === 'running')
+    {
+        context.suspend();
+    }
+}
+
+
+
+function playTunes(path) {
+    if(context.state === 'suspended' && path == currentSongPath)
+    {
+        context.resume();
+        return;
+    }
+    else if(context.state === 'running' && path == currentSongPath)
+    {
+        return;
+    }
+    context.suspend();
+    context = new AudioContext();
+    currentSongPath = path;
+    var request = new XMLHttpRequest();
+    request.open("GET", "/audio?path=" + path, true);
+    request.responseType = "arraybuffer";
+    showSpinner();
+
+
+    request.onload = function() {
+        hideSpinner();
+        var Data = request.response;
+        process(Data);
+    };
+    request.send();
+
+
+}
+function process(Data) {
+    source = context.createBufferSource(); // Create Sound Source
+    context.decodeAudioData(Data, function(buffer) {
+        source.buffer = buffer;
+        source.connect(context.destination);
+        source.start(context.currentTime);
+    });
 }

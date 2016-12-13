@@ -38,6 +38,7 @@ router.post('/login', function(req, res, next) {
                 });
             }
             res.status(200).json({
+                user: user,
                 status: 'Login successful!'
             });
         });
@@ -45,7 +46,7 @@ router.post('/login', function(req, res, next) {
 });
 
 router.get('/logout', function(req, res) {
-    req.logout()
+    req.logout();
     console.log("OUT!")
     res.status(200).json({
         status: 'Bye!'
@@ -58,6 +59,9 @@ router.get('/status', function(req, res) {
             status: false
         });
     }
+
+
+
     res.status(200).json({
         status: true
     });

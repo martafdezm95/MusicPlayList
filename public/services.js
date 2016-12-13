@@ -3,23 +3,30 @@ angular.module('OnlineMusicLibrary').factory('AuthService',
         function ($q, $timeout, $http) {
 
             // create user variable
-            var user = null;
+            var bUser = null;
+            var userObject = {};
 
             // return available functions for use in the controllers
             return ({
                 isLoggedIn: isLoggedIn,
                 getUserStatus: getUserStatus,
+                getUserObject: getUserObject,
                 login: login,
                 logout: logout,
                 register: register
             });
 
             function isLoggedIn() {
-                if(user) {
+                if(bUser) {
                     return true;
                 } else {
                     return false;
                 }
+            }
+
+            function getUserObject()
+            {
+                return userObject;
             }
 
             function getUserStatus() {
@@ -27,14 +34,14 @@ angular.module('OnlineMusicLibrary').factory('AuthService',
                 // handle success
                     .success(function (data) {
                         if(data.status){
-                            user = true;
+                            bUser = true;
                         } else {
-                            user = false;
+                            bUser = false;
                         }
                     })
                     // handle error
                     .error(function (data) {
-                        user = false;
+                        bUser = false;
                     });
             }
 
@@ -49,16 +56,20 @@ angular.module('OnlineMusicLibrary').factory('AuthService',
                 // handle success
                     .success(function (data, status) {
                         if(status === 200 && data.status){
-                            user = true;
+                            console.log("Data: ", data);
+                            bUser = true;
+                            userObject = data.user;
                             deferred.resolve();
                         } else {
-                            user = false;
+                            bUser = false;
+                            userObject = {};
                             deferred.reject();
                         }
                     })
                     // handle error
                     .error(function (data) {
-                        user = false;
+                        bUser = false;
+                        userObject = {};
                         deferred.reject();
                     });
 
@@ -76,12 +87,15 @@ angular.module('OnlineMusicLibrary').factory('AuthService',
                 $http.get('/user/logout')
                 // handle success
                     .success(function (data) {
-                        user = false;
+                        bUser = false;
+                        userObject = {};
+
                         deferred.resolve();
                     })
                     // handle error
                     .error(function (data) {
-                        user = false;
+                        bUser = false;
+                        userObject = {};
                         deferred.reject();
                     });
 
