@@ -2,11 +2,11 @@
 	<h1><a href="#/playlists">OnlineMusicLibrary<span>M7011E project</span></a></h1>
 	<a href="#/" ng-click="logout()">Logout</a>
 	<a href="#menu">Menu</a>
+	<img id="spinner" style="display:none" src="/images/ajax-loader.gif" alt="">
+
 	<nav id="menu">
 		<ul class="links">
-			<li><a href="#/home">Home</a></li>
 			<li><a href="#/playlists">Playlists</a></li>
-			<li><a href="#/elements">Elements</a></li>
 			<li><a href="#/" onclick="logout()">Logout</a></li>
 		</ul>
 	</nav>
@@ -19,8 +19,8 @@
 			<h1 class="align-center">
 				<h2>Your playlists</h2>
 				<div>
-					<h4>Select a playlist</h4>
-					<select id="selectPlaylist" onchange="updateSongTable()" ng-change="getPlaylist()" form="songForm" ng-model="playlist" ng-options="p as p.name for p in playlists " required></select>
+					<h1>Select a playlist</h1>
+					<select id="selectPlaylist" onchange="updateSongTable()" ng-change="getPlaylist(playlist)" form="songForm" ng-model="playlist" ng-options="p as p.name for p in playlists" required></select>
 					<br>
 					<td>
 						<form>
@@ -31,7 +31,7 @@
 				</div>
 				<div id="newPlaylist" class="newPlaylist">
 					<form ng-submit="createPlaylist()">
-						<input type="text" ng-model="formData.playlistName" id="playlistNameInput" required></input>
+						<input type="text" ng-model="formData.playlistName" id="playlistNameInput" required>
 						<button type="submit" onclick="showPlaylistTextField()">Create</button>
 					</form>
 				</div>
@@ -39,17 +39,17 @@
 		</div>
 
 	</section>
-	<h1 id="main">
+	<div id="main">
 		<!-- Three -->
 		<section class="wrapper ">
 			<div class="inner">
 			<span class="pull-left" style="margin:0px auto; display:block;text-align:center;">
 				<h2>{{ playlist.name }}</h2>
 			</span>
-				<div id="newSongButton" class="newSongButton" style="display: none; text-indent:20px;" ">
+				<div id="newSongButton" class="newSongButton" style="display: none; text-indent:20px;">
 					<br><td>
 					<button onclick="showAddSongsForm()">Add Songs to the playlist!</button>
-					</td>
+				</td>
 				</div>
 				<div id="newSong" class="newSong" style="display: none;">
 					<br><br><br><br>
@@ -99,12 +99,10 @@
 					<tbody id="songTable" ng-repeat="song in playlist.songs">
 					<tr>
 						<td>
-							<my-audio>
-								<audio class="player" controls>
-									<source ng-src="{{song.path}}" />
-								</audio>
-								<button id="play" class="play"z>Play</button>
-							</my-audio>
+							<button ng-click="playTunes(song.path)">Play</button>
+							<button ng-click="stopTunes(song.path)">Pause</button>
+							<div>
+							</div>
 						</td>
 						<td>{{song.artist}}</td>
 						<td>{{song.title}}</td>

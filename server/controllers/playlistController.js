@@ -1,12 +1,9 @@
 /**
  * Created by Erik on 12/6/16.
  */
-var fs = require("fs"),
-    formidable = require("formidable");
+var fs = require("fs");
+var formidable = require("formidable");
 var playlists = require("../models/playlists");
-var Playlist = require("../models/mongo").Playlists;
-var crypto = require('crypto');
-var S3FS = require('s3fs');
 var AWS = require('aws-sdk');
 var s3 = new AWS.S3({params: {Bucket: 'omlsongs'}});
 process.env.AWS_ACCESS_KEY_ID = "AKIAIS3RUJLQVYLPDPAQ";
@@ -14,17 +11,31 @@ process.env.AWS_SECRET_ACCESS_KEY = "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";
 
 
 module.exports = {
-    showAllMemo: function(req, res, next) {
-        playlists.showAll(function (err, playlists) {
+    getUser: function(req, res) {
+        if(req.user != null)
+        {
+            res.status(200).json({error: false, user: req.user});
+        }
+        else
+        {
+            res.status(401).json({error: true, message: "No user is logged in"});
+        }
+    },
+    showAllPlaylists: function(req, res) {
+        console.log("The request object: ", req.user);
+        playlists.showAllPlaylists(req.params.id, function (err, user) {
             if (err) {
-                res.status(400).json({error: true, mensaje: "Something went wrong"})
+                res.status(400).json({error: true, message: "Something went wrong"})
             } else {
-                res.status(200).json({error: false, playlists: playlists});
+                res.status(200).json({error: false, user: req.user});
             }
         });
     },
-    setMemo: function (req, res, next) {
+    setPlaylist: function (req, res)
+    {
         var form = new formidable.IncomingForm();
+
+        var userId = req.query.userId;
 
         form.multiples = true;
         form.parse(req, function(error, fields, files) {
@@ -35,57 +46,41 @@ module.exports = {
 
             if (fields.title != null && fields.artist != null && fields.playlistID != null )
             {
-                console.log("playlistID: ", fields.playlistID);
-                // If the file is filled in
+                console.log("playlistName: ", fields.playlistID);
+
+                // If a file is chosen
 
                 if (files.upload != '' && files.upload != null)
                 {
                     // where to store the file on S3
 
-                    var path = "files/" + files.upload.name;
-
-                    console.log("path of song in S3: ", path);
-
-                    // get the file from the form
-
-                    var file = files.upload;
+                    var s3path = fields.playlistID + "/" + files.upload.name;
 
                     // Write the file to S3 path
 
-                    writeFileToS3(files.upload.path, path);
+                    writeFileToS3(files.upload.path, s3path);
 
-                    fs.rename(files.upload.path, "./public/" + path, function (error) {
-                        if (error) {
-                            console.log("Error");
-                            fs.unlink("./public/" + path);
-                            fs.rename(files.upload.path, "./public/" + path);
+                    var song = {};
 
+                    song.artist = fields.artist;
+                    song.title = fields.title;
+                    song.path = s3path;
+
+                    var condition = {"_id" : userId, "playlists._id" : fields.playlistID};
+                    console.log("Playlist ID: ", fields.playlistID);
+
+                    var update = {"$push" : { "playlists.$.songs" : song}};
+
+                    playlists.updateUser(condition, update, function (err) {
+                        if (err) {
+                            res.status(400).json({error: true, message: "Something went wrong"});
                         } else {
-                            // Removes file from local file system
-
-                            fs.unlink("./public/" + path);
-
-
-                            var song = {};
-
-                            song.artist = fields.artist;
-                            song.title = fields.title;
-                            song.path = path;
-
-                            update = {$push : {songs : song}};
-
-
-                            playlists.updateMemo(fields.playlistID, update, function (err) {
-                                if (err) {
-                                    res.status(400).json({error: true, message: "Something went wrong"});
-                                } else {
-                                    playlists.show(fields.playlistID, function (err, playlist) {
-                                        res.status(200).json({error: false, playlist: playlist});
-                                    })
-                                }
+                            playlists.showAllPlaylists(userId, function (err, user) {
+                                res.status(200).json({error: false, user: req.user});
                             })
                         }
-                    });
+                    })
+
                 } else {
                     return;
                 }
@@ -97,12 +92,16 @@ module.exports = {
 
                 playlist.name = fields.playlistName;
 
-                playlists.insertMemo(playlist, function (err, document) {
+                var condition = {_id : userId};
+
+                var update = {$push : {playlists : playlist}};
+
+                playlists.updateUser(condition, update, function (err) {
                     if (err) {
                         res.status(400).json({error: true, message: "Something went wrong"});
                     } else {
-                        playlists.show(playlist._id, function (err, playlist) {
-                            res.status(200).json({error: false, playlists: playlist});
+                        playlists.showAllPlaylists(userId, function () {
+                            res.status(200).json({error: false, user: req.user});
                         })
                     }
                 })
@@ -112,46 +111,47 @@ module.exports = {
 
         //res.status(200).json({error: true, message: "No se ha podido crear la song"})
     },
-    show: function (req, res, next) {
-        playlists.show(req.params.id, function (err, playlist) {
-            if (err) {
-                res.status(400).json({error: true, message: "Something went wrong"})
-            } else {
-                if (playlist) {
-                    res.status(200).json({error: false, playlist: playlist})
-                } else {
-                    res.status(200).json({error: false, message: "The playlist with id '" + req.params.id + "' does not exist."})
-                }
-            }
-        })
-    },
-    deleteMemo: function (req, res) {
-        console.log("Deleting Playlist with ID: ", req.params.id);
-        playlists.deleteMemo(req.params.id, function (err) {
+    deletePlaylist: function (req, res)
+    {
+        console.log("Deleting Playlist with Id: ", req.params.id, " from User with ID: ", req.query.userId);
+
+        var condition = {_id : req.query.userId};
+
+        var update = {$pull: { "playlists" : {_id: req.params.id}}};
+
+        playlists.updateUser(condition, update, function (err) {
             if (err) {
                 res.status(400).json({error: true, message: "Something went wrong"});
             } else {
-                //deleteFileFromS3();
-                playlists.showAll(function (err, playlists) {
-                    res.status(200).json({error: false, playlists: playlists});
+                playlists.showAllPlaylists(req.query.userId, function () {
+                    res.status(200).json({error: false, user: req.user});
                 })
             }
         })
     },
-    deleteSong: function (req, res) {
-        console.log("Deleting Song with path: ", req.query.path, " and playlistID ", req.params.id);
-        playlists.deleteSong(req.params.id, req.query.path, function (err) {
+    deleteSong: function (req, res)
+    {
+        console.log("Deleting Song with path: ", req.query.songPath, " and playlist name ", req.query.playlistID, "From user with id ", req.params.id);
+
+        var condition = {"_id" : req.params.id, "playlists._id" : req.query.playlistID};
+
+        var update = {$pull: { "playlists.$.songs" : {path:  req.query.songPath}}};
+
+        playlists.updateUser(condition, update, function (err) {
             if (err) {
                 res.status(400).json({error: true, message: "Something went wrong"});
             } else {
-                //deleteFileFromS3();
-                playlists.showAll(function (err, playlists) {
-                    res.status(200).json({error: false, playlists: playlists});
-                })
+                deleteFileFromS3(req.query.songPath);
+                res.status(200).json({error: false, user: req.user});
             }
         })
     }
 }
+
+
+// Amazon S3 Functions
+
+
 function writeFileToS3(readPath, writePath)
 {
     fs.readFile(readPath, function (err, data) {
@@ -185,38 +185,18 @@ function writeFileToS3(readPath, writePath)
 
     })
 }
-function deleteFileFromS3(fileName)
+function deleteFileFromS3(path)
 {
     console.log("Preparing to delete");
-    console.log("filename", fileName);
+    console.log("filename", path);
     var params = {
         Bucket: 'omlsongs',
-        Key: fileName,
+        Key: path,
     }
-    s3.deleteObject(params, function(err, data) {
+    s3.deleteObject(params, function(err) {
         if (err)
             return console.log(err);
         else
-            console.log('success deleting ' + fileName + ' from s3');
+            console.log('success deleting ' + path + ' from s3');
     });
 }
-
-function getFileFromS3(path)
-{
-    var params = {
-        Bucket: 'omlsongs',
-        Key: path
-    }
-    s3.getObject(params, function(err, data) {
-        if(err)
-        {
-            console.log(err);
-        }
-        else
-        {
-            console.log(data);
-        }
-    });
-
-}
-
