@@ -32,15 +32,15 @@ angular.module('OnlineMusicLibrary').controller('logoutController',
     ['$scope', '$location', 'AuthService',
         function ($scope, $location, AuthService) {
 
-            $scope.logout = function () {
-
-                // call logout from service
-                AuthService.logout()
-                    .then(function () {
-                        $location.path('/');
-                    });
-
-            };
+            // $scope.logout = function () {
+            //
+            //     // call logout from service
+            //     AuthService.logout()
+            //         .then(function () {
+            //             $location.path('/');
+            //         });
+            //
+            // };
 
         }]);
 
@@ -79,7 +79,9 @@ angular.module('OnlineMusicLibrary').controller('registerController',
 //         function($scope, $http, $location){
 //     $location.path("/home")
 // }]);
-angular.module('OnlineMusicLibrary').controller('mainCtrl', ['$scope', '$http', 'addSongFormDataObject', 'createPlaylistFormDataObject', '$location', '$timeout', function($scope, $http, addSongFormDataObject, createPlaylistFormDataObject, $location, $timeout)
+angular.module('OnlineMusicLibrary').controller('mainCtrl',
+    ['$scope', '$http', 'addSongFormDataObject', 'createPlaylistFormDataObject', '$location', '$timeout', 'AuthService',
+        function($scope, $http, addSongFormDataObject, createPlaylistFormDataObject, $location, $timeout, AuthService)
 {
     $scope.formData = new FormData();
     $scope.error = {};
@@ -88,6 +90,15 @@ angular.module('OnlineMusicLibrary').controller('mainCtrl', ['$scope', '$http', 
     $scope.playlists = {};
     $scope.playlist = {};
 
+    $scope.logout = function () {
+
+        // call logout from service
+        AuthService.logout()
+            .then(function () {
+                $location.path('/');
+            });
+
+    };
     //listen for the file selected event
     $scope.$on("fileSelected", function (event, args) {
         $scope.$apply(function () {

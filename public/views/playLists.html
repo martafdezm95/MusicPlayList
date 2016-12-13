@@ -1,3 +1,17 @@
+<div id="header">
+	<h1><a href="#/playlists">OnlineMusicLibrary<span>M7011E project</span></a></h1>
+	<a href="#/" ng-click="logout()">Logout</a>
+	<a href="#menu">Menu</a>
+	<nav id="menu">
+		<ul class="links">
+			<li><a href="#/home">Home</a></li>
+			<li><a href="#/playlists">Playlists</a></li>
+			<li><a href="#/elements">Elements</a></li>
+			<li><a href="#/" onclick="logout()">Logout</a></li>
+		</ul>
+	</nav>
+</div>
+<!-- Nav -->
 
 <div class="container-fluid" >
 	<section class="wrapper style1">
@@ -86,7 +100,7 @@
 					<tr>
 						<td>
 							<my-audio>
-								<audio class="player">
+								<audio class="player" controls>
 									<source ng-src="{{song.path}}" />
 								</audio>
 								<button id="play" class="play"z>Play</button>
