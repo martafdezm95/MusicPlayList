@@ -1,10 +1,11 @@
+//Request for authentication management
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 
 var User = require('../models/mongo').User;
 
-
+//Register user
 router.post('/register', function(req, res) {
     User.register(new User({ username: req.body.username }),
         req.body.password, function(err, account) {
@@ -21,6 +22,7 @@ router.post('/register', function(req, res) {
         });
 });
 
+//Sign in
 router.post('/login', function(req, res, next) {
     passport.authenticate('local', function(err, user, info) {
         if (err) {
@@ -45,6 +47,7 @@ router.post('/login', function(req, res, next) {
     })(req, res, next);
 });
 
+//Log out
 router.get('/logout', function(req, res) {
     req.logout();
     console.log("OUT!")
@@ -53,6 +56,7 @@ router.get('/logout', function(req, res) {
     });
 });
 
+//Returns the status of the user
 router.get('/status', function(req, res) {
     if (!req.isAuthenticated()) {
         return res.status(200).json({

@@ -1,3 +1,4 @@
+//Declare variables
 var playlists   =   require("./server/models/playlists");
 var playlist = require('./server/controllers/playlistController');
 var express         =   require("express");
@@ -12,10 +13,11 @@ var formidable      =   require("formidable");
 var crypto          =   require('crypto');
 var passport        =   require('passport');
 var debug           =   require('debug')('passport-mongo');
-var routes          =   require('./server/routes/api.js');
+var routes          =   require('./server/controllers/api.js');
 var localStrategy   =   require('passport-local' ).Strategy;
 var s3 = require('s3');
 
+//AWS keys
 process.env.AWS_ACCESS_KEY_ID = "AKIAIS3RUJLQVYLPDPAQ";
 process.env.AWS_SECRET_ACCESS_KEY = "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";
 
@@ -38,27 +40,26 @@ app.use(require('express-session')({
     resave: false,
     saveUninitialized: false
 }));
-app.use(passport.initialize());
-app.use(passport.session());
 
 // configure passport
+app.use(passport.initialize());
+app.use(passport.session());
 passport.use(new localStrategy(mongoUser.authenticate()));
 passport.serializeUser(mongoUser.serializeUser());
 passport.deserializeUser(mongoUser.deserializeUser());
 
-// routes
+// Routes for passport
 app.use('/user/', routes);
 
+//Default view
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname, '../client', 'index.html'));
 });
 
-
-// Devuelve un Json con todas las songs en la bbdd
-//app.get("/songs",song.showAllMemo);
-
+//Returns all the songs of a playlist
 app.get("/playlists:id", playlist.showAllPlaylists);
 
+//Return a song from AWS
 app.get('/audio', function(req, res) {
 
     var params = {
@@ -82,12 +83,16 @@ app.get('/audio', function(req, res) {
     downloadStream.pipe(res);
 });
 
+//Create a new playlist
 app.post("/playlists", playlist.setPlaylist);
 
+//Return all the playlists of the user
 app.get("/user", playlist.getUser);
 
+//Remove a song from AWS
 app.delete("/songs/:id", playlist.deleteSong);
 
+//Remove a playlist
 app.delete("/playlists/:id", playlist.deletePlaylist);
 
 //Server error

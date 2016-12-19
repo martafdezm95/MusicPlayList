@@ -1,11 +1,9 @@
-/**
- * Created by Erik on 12/6/16.
- */
 var fs = require("fs");
 var formidable = require("formidable");
 var playlists = require("../models/playlists");
 var AWS = require('aws-sdk');
 var s3 = new AWS.S3({params: {Bucket: 'omlsongs'}});
+//AWS keys
 process.env.AWS_ACCESS_KEY_ID = "AKIAIS3RUJLQVYLPDPAQ";
 process.env.AWS_SECRET_ACCESS_KEY = "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";
 
@@ -21,6 +19,7 @@ module.exports = {
             res.status(401).json({error: true, message: "No user is logged in"});
         }
     },
+    //
     showAllPlaylists: function(req, res) {
         console.log("The request object: ", req.user);
         playlists.showAllPlaylists(req.params.id, function (err, user) {
@@ -151,7 +150,7 @@ module.exports = {
 
 // Amazon S3 Functions
 
-
+//Add a song in AWS
 function writeFileToS3(readPath, writePath)
 {
     fs.readFile(readPath, function (err, data) {
@@ -185,6 +184,8 @@ function writeFileToS3(readPath, writePath)
 
     })
 }
+
+//Remove songs from AWS
 function deleteFileFromS3(path)
 {
     console.log("Preparing to delete");
