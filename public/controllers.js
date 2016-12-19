@@ -23,9 +23,7 @@ angular.module('OnlineMusicLibrary').controller('loginController',
                         $scope.disabled = false;
                         $scope.loginForm = {};
                     });
-
             };
-
         }]);
 
 angular.module('OnlineMusicLibrary').controller('logoutController',
@@ -311,65 +309,15 @@ function updateSongTable()
     $('#songTable').load(document.URL + ' #songTable');
 }
 
-//Audio functions
-
-window.AudioContext = window.AudioContext || window.webkitAudioContext;
-var context = new AudioContext();
-var currentSongPath;
-var source;
-
-hideSpinner = function(){
-    var spinner = document.getElementById('spinner');
-    spinner.style.display = 'none';
-};
-showSpinner = function(){
-    var spinner = document.getElementById('spinner');
-    spinner.style.display = 'block';
-}
-
-function stopTunes()
-{
-    if(context.state === 'running')
-    {
-        context.suspend();
-    }
-}
-
-
-
 function playTunes(path) {
-    if(context.state === 'suspended' && path == currentSongPath)
-    {
-        context.resume();
-        return;
-    }
-    else if(context.state === 'running' && path == currentSongPath)
+    var player = document.getElementById("player");
+    var newSrc = "https://s3.amazonaws.com/omlsongs/" + path;
+    newSrc = newSrc.split(" ").join("%20");
+    if(newSrc == player.src)
     {
         return;
     }
-    context.suspend();
-    context = new AudioContext();
-    currentSongPath = path;
-    var request = new XMLHttpRequest();
-    request.open("GET", "/audio?path=" + path, true);
-    request.responseType = "arraybuffer";
-    showSpinner();
-
-
-    request.onload = function() {
-        hideSpinner();
-        var Data = request.response;
-        process(Data);
-    };
-    request.send();
-
-
-}
-function process(Data) {
-    source = context.createBufferSource(); // Create Sound Source
-    context.decodeAudioData(Data, function(buffer) {
-        source.buffer = buffer;
-        source.connect(context.destination);
-        source.start(context.currentTime);
-    });
+    player.src = "https://s3.amazonaws.com/omlsongs/" + path;
+    player.load();
+    player.play();
 }

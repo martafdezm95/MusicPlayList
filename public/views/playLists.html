@@ -100,9 +100,6 @@
 					<tr>
 						<td>
 							<button ng-click="playTunes(song.path)">Play</button>
-							<button ng-click="stopTunes(song.path)">Pause</button>
-							<div>
-							</div>
 						</td>
 						<td>{{song.artist}}</td>
 						<td>{{song.title}}</td>
@@ -118,4 +115,7 @@
 			</div>
 		</section>
 	</div>
+	<audio id="player" controls style="width: 100%; z-index: 1000; position: fixed; bottom: 0px;">
+	</audio>
+
 </div>
