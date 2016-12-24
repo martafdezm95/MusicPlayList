@@ -6,6 +6,7 @@ Request Method : GET
 Status Code : 
 * 304 Not Modified  
 * 200 OK  
+  
 Remote Address : 46.137.181.240:443  
 
 ###Return status of user
@@ -33,7 +34,8 @@ Request Method : POST
 Status Code:  
 * 500 Internal Server Error  ("UserExistsError" : "A user with the given username is already registered")
 * 200 OK  (Registration successful!)
-Remote Address:54.228.251.241:443  
+  
+Remote Address : 46.137.181.240:443  
 
 ###Return sign in form
 Request URL : https://onlinemusiclibrary.herokuapp.com/views/signin.html  
@@ -51,6 +53,8 @@ Status Code:
 Request payload:  
   - password : "test"  
   - username : "test"  
+  
+Remote Address : 46.137.181.240:443  
 
 ###Return main page with playlists
 Request URL:https://onlinemusiclibrary.herokuapp.com/views/playLists.html  
@@ -70,6 +74,8 @@ Status Code:
   Data :
     - Error : False
     - Message : "Login successful!"
+  
+Remote Address : 46.137.181.240:443  
 
 ###Return a song from AWS
 Request URL:https://onlinemusiclibrary.herokuapp.com/audio  
@@ -77,6 +83,8 @@ Request Method:GET
 Status Code:  
 * 400 Not Found  
 * 200 OK  
+  
+Remote Address : 46.137.181.240:443  
 
 ###Return the information of the user
 Request URL:https://onlinemusiclibrary.herokuapp.com/user  
@@ -94,6 +102,8 @@ User received from GET:
   - playlists : Array[]  
   - username : String  
   
+Remote Address : 46.137.181.240:443  
+  
 ###Create a new playlists
 Request URL:https://onlinemusiclibrary.herokuapp.com/playlists  
 Request Method:POST  
@@ -106,7 +116,8 @@ Status Code:
   Data :  
     - Error : False  
     - Message : OK  
-
+  
+Remote Address : 46.137.181.240:443  
 
 ###Remove a playlist
 Request URL:https://onlinemusiclibrary.herokuapp.com/playlists/:id
@@ -120,6 +131,8 @@ Status Code:
   Data :  
     - Error : False  
     - Message : OK  
+  
+Remote Address : 46.137.181.240:443  
 
 ###Remove a song from AWS and from the playlist
 Request URL:https://onlinemusiclibrary.herokuapp.com/songs/:id   
@@ -133,13 +146,17 @@ Status Code:
   Data :  
     - Error : False  
     - Message : OK  
-    
+  
+Remote Address : 46.137.181.240:443  
+
 ###Log out
 Request URL:https://onlinemusiclibrary.herokuapp.com/user/logout  
 Request Method:GET  
 Status Code:200 OK  
 Remote Address:54.228.203.27:443  
 Status : "Bye!"  
+  
+Remote Address : 46.137.181.240:443  
 
 ###Server error
 Request URL:https://onlinemusiclibrary.herokuapp.com/error
