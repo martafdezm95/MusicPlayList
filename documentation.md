@@ -6,7 +6,7 @@ Request Method : GET
 Data :
 * Status :
   - True
-  - False
+  - False      
 Status Code : 
 * 304 Not Modified  
 * 200 OK
