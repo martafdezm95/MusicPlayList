@@ -3,17 +3,15 @@
 ###Front page
 Request URL : https://onlinemusiclibrary.herokuapp.com/views/frontPage.html  
 Request Method : GET  
-
 Status Code : 
 * 304 Not Modified  
 * 200 OK  
 Data :
-* Status :
-  - True
-  - False  
+  - Status :
+    - True
+    - False  
    
 Remote Address : 46.137.181.240:443  
-
 
 ###Return status of user
 Request URL : https://onlinemusiclibrary.herokuapp.com/user/status  
