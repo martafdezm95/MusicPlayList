@@ -7,6 +7,11 @@
     "start": "node server.js",
     "postinstall": "./node_modules/bower/bin/bower install"
   },
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/martafdezm95/OnlineMusicLibrary.git"
+  },
   "dependencies": {
     "aws-sdk": "^2.7.10",
     "bcrypt-nodejs": "0.0.3",
