@@ -97,7 +97,7 @@ app.delete("/playlists/:id", playlist.deletePlaylist);
 
 //Server error
 app.get('/error', function(req,res){
-    res.status(404).send('<h1>500 SERVER ERROR</h1>')
+    res.status(404).send('<h1>Not Found</h1>')
 });
 
 // error hndlers
@@ -108,7 +108,7 @@ app.use(function(req, res, next) {
 });
 
 app.use(function(err, req, res) {
-    res.status(err.status || 500);
+    res.status(err.status || 404);
     res.end(JSON.stringify({
         message: err.message,
         error: {}

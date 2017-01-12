@@ -10,7 +10,7 @@ router.post('/register', function(req, res) {
     User.register(new User({ username: req.body.username }),
         req.body.password, function(err, account) {
             if (err) {
-                return res.status(500).json({
+                return res.status(400).json({
                     err: err
                 });
             }
@@ -35,7 +35,7 @@ router.post('/login', function(req, res, next) {
         }
         req.logIn(user, function(err) {
             if (err) {
-                return res.status(500).json({
+                return res.status(400).json({
                     err: 'Could not log in user'
                 });
             }
@@ -63,8 +63,6 @@ router.get('/status', function(req, res) {
             status: false
         });
     }
-
-
 
     res.status(200).json({
         status: true

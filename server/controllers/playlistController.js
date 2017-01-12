@@ -16,7 +16,7 @@ module.exports = {
         }
         else
         {
-            res.status(401).json({error: true, message: "No user is logged in"});
+            res.status(401).json({error: true, message: "(UNAUTHORIZED: No user is logged in"});
         }
     },
     //
