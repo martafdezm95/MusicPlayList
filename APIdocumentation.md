@@ -32,7 +32,7 @@ Remote Address : 54.217.217.36:443
 Request URL : https://onlinemusiclibrary.herokuapp.com/user/register  
 Request Method : POST  
 Status Code:  
-* 500 Internal Server Error  ("UserExistsError" : "A user with the given username is already registered")
+* 400 Internal Server Error  ("UserExistsError" : "A user with the given username is already registered")
 * 200 OK  (Registration successful!)
   
 Remote Address : 46.137.181.240:443  
@@ -48,7 +48,7 @@ Request URL : https://onlinemusiclibrary.herokuapp.com/user/login
 Request Method : POST  
 Status Code:  
 * 401 Unauthorized  
-* 500 Could not log in user
+* 400 Could not log in user
 * 200 OK  (Login sucessful!")  
 Request payload:  
   - password : "test"  
