@@ -163,3 +163,56 @@ Request URL:https://onlinemusiclibrary.herokuapp.com/error
 Request Method:GET  
 Status Code: 404 Not Found (SERVER ERROR)
 Remote Address:54.228.251.241:443 
+
+###API Call Flow
+Home page:
+    options: 1. Sign-up
+             2. Login
+
+    if 1. Sign-up
+        User fills out information then presses sign up:
+        API Call : POST https://onlinemusiclibrary.herokuapp.com/user/register
+
+    Go to home page
+
+    if 2. Login
+        User fills out username and password and presses login:
+        API Call : POST https://onlinemusiclibrary.herokuapp.com/user/login
+
+    Go to Playlists page
+
+
+Playlists Page:
+        options: 1. Create Playlist
+                 2. Play Song
+                 3. Delete Song
+                 4. Delete Playlist
+                 5. Add Song to playlist
+
+        if 1. Create Playlist
+            User fills out playlist name then presses Create:
+            API Call : POST https://onlinemusiclibrary.herokuapp.com/playlists
+
+        if 2. Play Song
+            User presses play on one of the songs in the playlist
+            API Call: POST https://onlinemusiclibrary.herokuapp.com/audio
+
+        if 3. Delete Song
+            User presses remove next to song
+            API Call: DELETE https://onlinemusiclibrary.herokuapp.com/songs/:id
+
+
+        if 4. Delete Playlist
+            User presses remove before selected playlist
+            API Call: DELETE https://onlinemusiclibrary.herokuapp.com/playlists:id
+
+
+        if 5. Add Song to Playlist
+            User presses add song to playlist and fills out the song information and uploads a file
+            API Call: Request URL:https://onlinemusiclibrary.herokuapp.com/playlists/:id
+
+In the application after any deletions, additions or modification of the user or playlists,
+a GET call is made, to the endpoint: https://onlinemusiclibrary.herokuapp.com/user
+
+
+
