@@ -17,14 +17,10 @@ var routes          =   require('./server/controllers/api.js');
 var localStrategy   =   require('passport-local' ).Strategy;
 var s3 = require('s3');
 
-//AWS keys
-process.env.AWS_ACCESS_KEY_ID = "AKIAIS3RUJLQVYLPDPAQ";
-process.env.AWS_SECRET_ACCESS_KEY = "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";
-
 var client = s3.createClient({
     s3options: {
-        accessKeyId: "AKIAIS3RUJLQVYLPDPAQ",
-        secretAccessKey: "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"
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY
     }
 });
 

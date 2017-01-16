@@ -2,7 +2,7 @@
 var http = require('http');
 var mongoose    =   require("mongoose");
 var passportLocalMongoose = require('passport-local-mongoose');
-var uristring = process.env.MONGOLAB_URI || 'mongodb://root:root@ds159527.mlab.com:59527/onlinemusiclibrary';
+var uristring = process.env.MONGOLAB_URI;
 
 mongoose.connect(uristring, function (err, res) {
     if (err) {
